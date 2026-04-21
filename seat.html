@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>자리 배치 프로그램</title>
+
+<style>
+
+body {
+    font-family: "Pretendard", "Noto Sans KR", sans-serif;
+    text-align: center;
+    background: linear-gradient(135deg, #e3f2fd, #ffffff);
+    margin: 0;
+    padding: 30px;
+}
+
+h2 {
+    color: #444;
+    margin-bottom: 15px;
+}
+
+.main-container {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+}
+
+.name-list {
+    width: 150px;
+    background: white;
+    padding: 10px;
+    border-radius: 12px;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+}
+
+.name-item {
+    padding: 6px;
+    margin: 5px 0;
+    background: #e3f2fd;
+    border-radius: 6px;
+    cursor: grab;
+    font-size: 14px;
+}
+
+.classroom {
+    display: grid;
+    grid-template-columns: repeat(9, 80px);
+    gap: 10px;
+    justify-content: center;
+    margin-bottom: 30px;
+}
+
+.seat {
+    width: 80px;
+    height: 50px;
+    border-radius: 12px;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #fff8dc;
+    font-size: 14px;
+    font-weight: 500;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.15);
+    transition: 0.2s;
+}
+
+.seat:hover {
+    transform: translateY(-3px);
+}
+
+.empty {
+    border: none;
+}
+
+.bottom-area {
+    position: relative;
+    width: 720px;
+    margin: auto;
+    height: 80px;
+}
+
+.teacher {
+    position: absolute;
+    left: 0;
+    width: 120px;
+    height: 40px;
+    border-radius: 10px;
+    background: #90caf9;
+    color: white;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.screen {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 160px;
+    height: 40px;
+    border-radius: 10px;
+    background: #81c784;
+    color: white;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+button {
+    margin-top: 25px;
+    padding: 12px 28px;
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+    border-radius: 30px;
+    background: linear-gradient(135deg, #42a5f5, #1e88e5);
+    color: white;
+    cursor: pointer;
+}
+
+.window-label {
+    font-weight: bold;
+    color: #666;
+    margin-bottom: 10px;
+}
+
+</style>
+</head>
+
+<body>
+
+<h2 class="window-label">🪟 뒤쪽 유리창</h2>
+
+<div class="main-container">
+
+<div class="name-list" id="nameList"></div>
+
+<div>
+
+<div class="classroom" id="classroom"></div>
+
+<div class="bottom-area">
+<div class="teacher">👩‍🏫 강사</div>
+<div class="screen">🖥 앞쪽 스크린</div>
+</div>
+
+<button onclick="shuffleSeats()">🎲 자리 섞기</button>
+<button onclick="clearSeats()">🧹 자리 초기화</button>
+<button onclick="saveSeats()">💾 자리 저장</button>
+<button onclick="loadSeats()">📂 저장 불러오기</button>
+
+</div>
+
+</div>
+
+<script>
+
+/* 자리 구조 */
+
+let seatLayout = [
+
+["조윤","조은결",null,"이춘우","최준호","이서우",null,"황동건","이상욱"],
+["권태현","김성호",null,"김민정1","박지우","박은빈",null,"원가희","신혜진"],
+[null,"한혜경",null,"진미경","박상우","조용민",null,"김선희","한은태"],
+[null,"유지산",null,"김민정2","이종혁","김유선",null,"박초롱","박준하"],
+[null,null,null,null,"심정호","이태경",null ,"채란","이민지"]
+
+];
+
+let allStudents = [
+"조윤","조은결","이춘우","최준호",
+"이서우","황동건","이상욱",
+"권태현","김성호","김민정1",
+"박지우","박은빈","원가희",
+"신혜진","한혜경","진미경",
+"박상우","조용민","김선희",
+"한은태","유지산","이종혁","김민정2",
+"김유선","박초롱","박준하",
+"심정호","이태경","채란","이민지"
+];
+
+let draggedName=null;
+let draggedSeat=null;
+
+/* 남은 이름 계산 */
+
+function getRemainingStudents(){
+
+let used=[];
+
+seatLayout.forEach(row=>{
+row.forEach(seat=>{
+if(seat!==null && seat!=="")
+used.push(seat);
+});
+});
+
+return allStudents.filter(name=>!used.includes(name));
+
+}
+
+/* 이름 리스트 */
+
+function drawNameList(){
+
+let list=document.getElementById("nameList");
+list.innerHTML="";
+
+let remaining=getRemainingStudents();
+
+remaining.forEach(name=>{
+
+let div=document.createElement("div");
+
+div.className="name-item";
+div.textContent=name;
+
+div.draggable=true;
+
+div.addEventListener("dragstart",()=>{
+draggedName=name;
+draggedSeat=null;
+});
+
+list.appendChild(div);
+
+});
+
+}
+
+/* 자리 */
+
+function drawSeats(){
+
+let classroom=document.getElementById("classroom");
+classroom.innerHTML="";
+
+seatLayout.forEach((row,rowIndex)=>{
+
+row.forEach((seat,colIndex)=>{
+
+let div=document.createElement("div");
+
+if(seat===null){
+
+div.className="empty";
+
+}else{
+
+div.className="seat";
+
+if(seat!=="")
+div.textContent=seat;
+
+div.draggable=true;
+
+div.addEventListener("dragstart",()=>{
+draggedSeat={row:rowIndex,col:colIndex};
+draggedName=null;
+});
+
+div.addEventListener("dragover",e=>{
+e.preventDefault();
+});
+
+div.addEventListener("drop",()=>{
+
+if(draggedName){
+seatLayout[rowIndex][colIndex]=draggedName;
+}
+
+if(draggedSeat){
+
+let temp=
+seatLayout[draggedSeat.row][draggedSeat.col];
+
+seatLayout[draggedSeat.row][draggedSeat.col]=
+seatLayout[rowIndex][colIndex];
+
+seatLayout[rowIndex][colIndex]=temp;
+
+}
+
+drawSeats();
+drawNameList();
+
+});
+
+}
+
+classroom.appendChild(div);
+
+});
+
+});
+
+}
+
+/* 자리 섞기 */
+
+function shuffleSeats(){
+
+let names=[];
+
+seatLayout.forEach(row=>{
+row.forEach(seat=>{
+if(seat!==null && seat!=="")
+names.push(seat);
+});
+});
+
+for(let i=names.length-1;i>0;i--){
+
+let j=Math.floor(Math.random()*(i+1));
+[names[i],names[j]]=[names[j],names[i]];
+
+}
+
+let index=0;
+
+seatLayout=seatLayout.map(row=>
+row.map(seat=>{
+if(seat===null) return null;
+return names[index++]||"";
+})
+);
+
+drawSeats();
+drawNameList();
+
+}
+
+/* 초기화 */
+
+function clearSeats(){
+
+seatLayout=seatLayout.map(row=>
+row.map(seat=>
+seat===null?null:""
+)
+);
+
+drawSeats();
+drawNameList();
+
+}
+
+/* 💾 저장 */
+
+function saveSeats(){
+
+localStorage.setItem(
+"classroomSeats",
+JSON.stringify(seatLayout)
+);
+
+alert("자리 저장 완료!");
+
+}
+
+/* 📂 불러오기 */
+
+function loadSeats(){
+
+let saved=
+localStorage.getItem("classroomSeats");
+
+if(saved){
+
+seatLayout=JSON.parse(saved);
+
+drawSeats();
+drawNameList();
+
+alert("저장된 자리 불러오기 완료!");
+
+}else{
+
+alert("저장된 데이터가 없습니다.");
+
+}
+
+}
+
+/* 시작 시 자동 불러오기 */
+
+function autoLoad(){
+
+let saved=
+localStorage.getItem("classroomSeats");
+
+if(saved){
+seatLayout=JSON.parse(saved);
+}
+
+drawSeats();
+drawNameList();
+
+}
+
+autoLoad();
+
+</script>
+
+</body>
+</html>
