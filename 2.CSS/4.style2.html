@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+        #my_bg_orange {
+            background-color: orange;
+        } 
+
+        .my_bg_yellow {
+            border: 2px dotted red; /* solid, dashed, dotted, double ... */
+            background-color: yellow;
+        }
+
+        .my_text_pink {
+            color: pink;
+        }
+
+        .my_text_blue {
+            color: blue;
+        }
+
+        p {
+            color: green;
+        }
+    </style> <!--같은 계층에서는 나중에 오는게 우선순위 높음-->
+</head>
+<body>
+    <h1>CSS 연습</h1>
+    <p class="my_bg_yellow">여기는 아무 문장이나 적으시오.</p>
+    <p>여기는 아무 문장이나 적으시오.</p>
+    <p class="my_text_blue my_bg_yellow" id="my_bg_orange">여기는 아무 문장이나 적으시오.</p>
+    <p class="my_text_pink">여기는 아무 문장이나 적으시오.</p> <!--my_text_blue 넣으면 핑크대신 블루 적용-->
+</body>
+</html>
