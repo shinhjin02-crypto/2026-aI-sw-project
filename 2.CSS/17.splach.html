@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=divise=width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .splash {
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            position: fixed;
+
+            background-color: #000;
+            color: #fff;
+            font-size: 2em;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            z-index: 1000;
+
+            animation: fadeOut 1s ease-in-out 3s forwards;
+        }
+
+        @keyframes fadeOut {
+            to {
+                opacity: 0;
+                visibility: hidden;
+            }
+        }
+
+        .content {
+            opacity: 1;
+            animation: fadeIn 1s ease-in-out 4s forwards;
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="splash">로딩 중</div>
+
+    <div class="content">
+        <h1>WelCome!</h1>
+        <p>여기는 메인 컨텐츠 입니다..</p>
+    </div>
+    
+</body>
+</html>

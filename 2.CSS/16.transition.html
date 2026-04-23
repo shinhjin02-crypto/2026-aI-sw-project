@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+        .square {
+            width: 100px;
+            height: 100px;
+            background-color: red;
+
+            transition-property: width, height;
+            transition-duration: 1.5s;
+            transition-timing-function: cubic-bezier(0.19, 1, 0.22, 1);
+        }
+
+        .square:hover { /* 얘를 없애면 사이트 들어가자마자 바로 width, height 값에 영향을 줌*/
+            width: 150px;
+            height: 150px;
+
+        }
+
+        .button {
+            color: black;
+            transition-property: color;
+            transition-duration: 1.5s;
+        }
+
+        .button:hover {
+            color: blue;
+        }
+
+        .image {
+            width: 200px;
+            height: 200px;
+            transition-property: transform;
+            transition-duration: 1.0s;
+        }
+
+        .image:hover {
+            transform: rotate(400deg);
+        }
+    </style>
+</head>
+<body>
+    <div class="square"></div>
+    <hr>
+    <button class="button">마우스를 올려보세요</button>
+    <hr>
+    <img class="image" src="image/cat1.jpeg">
+</body>
+</html>

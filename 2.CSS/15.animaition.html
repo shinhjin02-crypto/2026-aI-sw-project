@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+        .box {
+            width: 100px;
+            height: 100px;
+            background-color: red;
+
+            animation-name: moveleft;
+            animation-duration: 2s;
+            animation-iteration-count: infinite;
+            animation-direction: alternate;
+            animation-timing-function: linear;
+            position: relative;
+        }
+
+        @keyframes moveleft { /* 내가 정한 이름 */
+            0% {
+                left: 0;
+            }
+
+            50% {
+                left: 50px;
+            }
+
+            100% {
+                left: 0px;
+            }
+        }
+
+        .text {
+            color: black;
+            animation-name: fadeOut;
+            animation-duration: 1.5s;
+            animation-delay: 1s;
+            animation-timing-function: cubic-bezier(0.215, 0.610, 0.355, 1);
+            animation-iteration-count: 3;
+
+        }
+
+        @keyframes fadeOut {
+            0% {
+                opacity: 1; /* 불투명 */
+            }
+
+            100% {
+                opacity: 0; /* 투명 */
+            }
+        }
+
+        .circle {
+            width: 100px;
+            height: 100px;
+            background-color: blue;
+            border-radius: 20%;
+            animation-name: rotateAndScale;
+            animation-duration: 3s;
+            animation-iteration-count: infinite;
+        }
+
+        @keyframes rotateAndScale {
+            0% {
+                transform: rotate(0deg) scale(1);
+            }
+
+            50% {
+                transform: rotate(100deg) scale(1.5);
+            }100% {
+                transform: rotate(360deg) scale(1);
+            }
+        }
+
+        .image {
+            width: 300px;
+            height: 200px;
+            animation-name: shake;
+            animation-duration: 2s;
+            animation-timing-function: linear;
+            animation-iteration-count: infinite;
+        }
+
+        @keyframes shake {
+            0% {
+                transform: translateX(0);
+            }
+            25% {
+                transform: translateX(-10%) rotate(-5deg);
+            }
+            75% {
+                transform: translate(10%) rotate(5deg);
+            }
+            100% {
+                transform: translate(0);
+            }
+        }
+
+    </style>
+</head>
+<body>
+    <div class="box"></div>
+    <hr>
+    <p class="text">"페이드 아웃 글자 효과"</p>
+    <hr>
+    <p class="circle"></p>
+    <hr>
+    <img class="image" src="image/cat1.jpeg"></p>
+
+    
+</body>
+</html>
