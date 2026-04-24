@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>Tailwind + AOS Scroll Demo</title>
+
+  <!-- Tailwind CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- AOS -->
+  <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet">
+  <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+
+  <style>
+    body {
+      scroll-behavior: smooth;
+    }
+  </style>
+</head>
+
+<body class="bg-gray-900 text-white">
+
+  <!-- HERO -->
+  <section class="h-screen flex flex-col justify-center items-center text-center">
+    <h1 data-aos="fade-up" class="text-5xl font-bold mb-6">
+      Scroll Animation Showcase
+    </h1>
+    <p data-aos="fade-up" data-aos-delay="200" class="text-gray-400">
+      TailwindCSS + AOS
+    </p>
+  </section>
+
+  <!-- SECTION 1 -->
+  <section class="h-screen flex items-center justify-center">
+    <div data-aos="fade-right" class="bg-indigo-500 p-10 rounded-xl shadow-2xl">
+      <h2 class="text-3xl font-bold">Fade Right</h2>
+    </div>
+  </section>
+
+  <!-- SECTION 2 -->
+  <section class="h-screen flex items-center justify-center">
+    <div data-aos="fade-left" class="bg-pink-500 p-10 rounded-xl shadow-2xl">
+      <h2 class="text-3xl font-bold">Fade Left</h2>
+    </div>
+  </section>
+
+  <!-- SECTION 3 -->
+  <section class="h-screen flex items-center justify-center">
+    <div data-aos="zoom-in" class="bg-green-500 p-10 rounded-full shadow-2xl">
+      <h2 class="text-2xl font-bold">Zoom In</h2>
+    </div>
+  </section>
+
+  <!-- GRID CARDS -->
+  <section class="min-h-screen py-32 px-10">
+    <h2 class="text-4xl text-center mb-16" data-aos="fade-up">Card Grid</h2>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
+      <div data-aos="flip-left" class="bg-gray-800 p-6 rounded-xl">
+        카드 1
+      </div>
+      <div data-aos="flip-right" class="bg-gray-800 p-6 rounded-xl">
+        카드 2
+      </div>
+      <div data-aos="flip-up" class="bg-gray-800 p-6 rounded-xl">
+        카드 3
+      </div>
+    </div>
+  </section>
+
+  <!-- STAGGER ANIMATION -->
+  <section class="min-h-screen flex flex-col items-center justify-center space-y-10">
+    <h2 class="text-4xl mb-10">Stagger Animation</h2>
+
+    <div class="space-y-6">
+      <div data-aos="fade-up" data-aos-delay="0" class="bg-blue-500 p-5 rounded">
+        Item 1
+      </div>
+      <div data-aos="fade-up" data-aos-delay="200" class="bg-blue-500 p-5 rounded">
+        Item 2
+      </div>
+      <div data-aos="fade-up" data-aos-delay="400" class="bg-blue-500 p-5 rounded">
+        Item 3
+      </div>
+      <div data-aos="fade-up" data-aos-delay="600" class="bg-blue-500 p-5 rounded">
+        Item 4
+      </div>
+    </div>
+  </section>
+
+  <!-- PARALLAX 느낌 -->
+  <section class="h-screen flex items-center justify-center relative overflow-hidden">
+    <div data-aos="fade-up"
+         data-aos-duration="2000"
+         class="absolute text-6xl font-bold opacity-10">
+      BACKGROUND TEXT
+    </div>
+
+    <div data-aos="zoom-in-up" class="bg-yellow-500 p-10 rounded-xl z-10">
+      Foreground Content
+    </div>
+  </section>
+
+  <!-- BIG CTA -->
+  <section class="h-screen flex items-center justify-center bg-gradient-to-r from-purple-500 to-indigo-600">
+    <div data-aos="zoom-out" class="text-center">
+      <h2 class="text-5xl font-bold mb-6">WOW EFFECT</h2>
+      <button class="bg-white text-black px-6 py-3 rounded-lg hover:scale-110 transition">
+        Click Me
+      </button>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="h-[400px] flex items-center justify-center text-gray-400">
+    <p data-aos="fade-up">End of Scroll</p>
+  </footer>
+
+  <script>
+    AOS.init({
+      duration: 1000,
+      once: false,
+      mirror: true
+    });
+  </script>
+
+</body>
+</html>

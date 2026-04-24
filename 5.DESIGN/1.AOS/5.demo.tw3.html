@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Tailwind -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- AOS -->
+  <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet">
+  <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+
+  <title>Tailwind + AOS Demo</title>
+</head>
+
+<body class="bg-gray-900 text-white">
+
+  <!-- HERO -->
+  <section class="h-screen flex flex-col justify-center items-center text-center bg-gradient-to-br from-purple-800 to-indigo-900">
+    <h1 class="text-5xl font-bold mb-4" data-aos="fade-down">
+      Scroll Animation Demo
+    </h1>
+    <p class="text-lg opacity-80" data-aos="fade-up" data-aos-delay="300">
+      스크롤하면서 다양한 효과를 확인해보세요
+    </p>
+  </section>
+
+  <!-- 카드 섹션 -->
+  <section class="py-32 px-6 max-w-6xl mx-auto">
+    <h2 class="text-3xl font-bold mb-12 text-center" data-aos="fade-up">
+      Card Animation
+    </h2>
+
+    <div class="grid md:grid-cols-3 gap-10">
+      <div class="bg-white text-black p-6 rounded-xl shadow-xl"
+           data-aos="fade-up">
+        Fade Up
+      </div>
+
+      <div class="bg-white text-black p-6 rounded-xl shadow-xl"
+           data-aos="zoom-in" data-aos-delay="200">
+        Zoom In
+      </div>
+
+      <div class="bg-white text-black p-6 rounded-xl shadow-xl"
+           data-aos="flip-left" data-aos-delay="400">
+        Flip Left
+      </div>
+    </div>
+  </section>
+
+  <!-- 좌우 슬라이드 -->
+  <section class="py-32 bg-gray-800">
+    <div class="max-w-6xl mx-auto px-6 space-y-24">
+
+      <div class="flex items-center gap-10">
+        <div class="w-1/2" data-aos="fade-right">
+          <img src="https://picsum.photos/500/300" class="rounded-xl">
+        </div>
+        <div class="w-1/2" data-aos="fade-left">
+          <h3 class="text-2xl font-bold mb-4">좌우 슬라이드</h3>
+          <p class="opacity-70">이미지와 텍스트가 반대 방향에서 등장</p>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-10 flex-row-reverse">
+        <div class="w-1/2" data-aos="fade-left">
+          <img src="https://picsum.photos/500/301" class="rounded-xl">
+        </div>
+        <div class="w-1/2" data-aos="fade-right">
+          <h3 class="text-2xl font-bold mb-4">반대 방향</h3>
+          <p class="opacity-70">레이아웃만 바꿔도 느낌이 달라짐</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- 스태거 리스트 -->
+  <section class="py-32 px-6 max-w-4xl mx-auto">
+    <h2 class="text-3xl font-bold mb-10 text-center" data-aos="fade-up">
+      Stagger Animation
+    </h2>
+
+    <ul class="space-y-6">
+      <li class="bg-indigo-600 p-6 rounded-lg" data-aos="fade-up" data-aos-delay="0">Item 1</li>
+      <li class="bg-indigo-600 p-6 rounded-lg" data-aos="fade-up" data-aos-delay="100">Item 2</li>
+      <li class="bg-indigo-600 p-6 rounded-lg" data-aos="fade-up" data-aos-delay="200">Item 3</li>
+      <li class="bg-indigo-600 p-6 rounded-lg" data-aos="fade-up" data-aos-delay="300">Item 4</li>
+    </ul>
+  </section>
+
+  <!-- 패럴럭스 느낌 -->
+  <section class="h-[600px] bg-fixed bg-center bg-cover flex items-center justify-center"
+           style="background-image:url('https://picsum.photos/1200/800');">
+    <h2 class="text-4xl font-bold bg-black/50 px-6 py-3 rounded"
+        data-aos="zoom-in">
+      Parallax Section
+    </h2>
+  </section>
+
+  <!-- 큰 타이틀 효과 -->
+  <section class="py-40 text-center">
+    <h2 class="text-6xl font-extrabold"
+        data-aos="zoom-in-up">
+      BIG IMPACT
+    </h2>
+    <p class="mt-6 opacity-70"
+       data-aos="fade-up" data-aos-delay="300">
+      강한 임팩트를 주는 섹션
+    </p>
+  </section>
+
+  <!-- 반복 카드 -->
+  <section class="py-32 px-6 max-w-6xl mx-auto">
+    <div class="grid md:grid-cols-4 gap-6">
+      <div class="bg-pink-500 p-6 rounded-lg" data-aos="flip-up">1</div>
+      <div class="bg-pink-500 p-6 rounded-lg" data-aos="flip-up" data-aos-delay="100">2</div>
+      <div class="bg-pink-500 p-6 rounded-lg" data-aos="flip-up" data-aos-delay="200">3</div>
+      <div class="bg-pink-500 p-6 rounded-lg" data-aos="flip-up" data-aos-delay="300">4</div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="py-20 text-center bg-gray-800">
+    <p data-aos="fade-up">끝까지 스크롤 완료 🎉</p>
+  </footer>
+
+  <script>
+    AOS.init({
+      duration: 1000,
+      once: false, // 반복 실행
+      easing: 'ease-in-out',
+    });
+  </script>
+
+</body>
+</html>

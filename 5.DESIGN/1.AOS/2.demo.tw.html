@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Tailwind -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- AOS -->
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
+  <title>Pink Heart Scroll</title>
+
+  <style>
+    body {
+      background: linear-gradient(to bottom, #ffe4ec, #ffc1d6);
+    }
+
+    /* 하트 만들기 */
+    .heart {
+      position: relative;
+      width: 100px;
+      height: 100px;
+      background: pink;
+      transform: rotate(-45deg);
+    }
+
+    .heart::before,
+    .heart::after {
+      content: "";
+      position: absolute;
+      width: 100px;
+      height: 100px;
+      background: pink;
+      border-radius: 50%;
+    }
+
+    .heart::before {
+      top: -50px;
+      left: 0;
+    }
+
+    .heart::after {
+      left: 50px;
+      top: 0;
+    }
+
+    /* 둥실둥실 효과 */
+    .float {
+      animation: float 3s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0) rotate(-45deg); }
+      50% { transform: translateY(-20px) rotate(-45deg); }
+    }
+  </style>
+</head>
+
+<body class="text-pink-700">
+
+  <!-- HERO -->
+  <section class="h-screen flex flex-col justify-center items-center text-center">
+    <h1 class="text-5xl font-bold mb-4" data-aos="fade-down">
+      💖 Cute Scroll World 💖
+    </h1>
+    <p data-aos="fade-up" data-aos-delay="300">
+      스크롤하면 하트들이 나타나요!
+    </p>
+  </section>
+
+
+  <!-- 하트 3개 -->
+  <section class="h-[800px] flex justify-center items-center gap-20">
+
+    <div class="heart float bg-pink-300"
+         data-aos="zoom-in"></div>
+
+    <div class="heart float bg-pink-400"
+         data-aos="fade-up"
+         data-aos-delay="200"></div>
+
+    <div class="heart float bg-pink-500"
+         data-aos="zoom-in"
+         data-aos-delay="400"></div>
+
+  </section>
+
+
+  <!-- 텍스트 + 하트 -->
+  <section class="h-[900px] flex flex-col items-center justify-center gap-20">
+
+    <div class="text-3xl font-bold"
+         data-aos="fade-up">
+      💕 Love Section 💕
+    </div>
+
+    <div class="flex items-center gap-16">
+
+      <div class="heart bg-pink-400"
+           data-aos="fade-right"></div>
+
+      <p class="text-xl"
+         data-aos="fade-left">
+        하트와 함께 등장하는 귀여운 애니메이션
+      </p>
+
+    </div>
+
+  </section>
+
+
+  <!-- 하트 리스트 -->
+  <section class="h-[1000px] flex flex-col items-center justify-center">
+
+    <h2 class="text-3xl mb-10" data-aos="fade-up">
+      💗 Heart List 💗
+    </h2>
+
+    <div class="grid grid-cols-3 gap-20">
+
+      <div class="heart bg-pink-300"
+           data-aos="flip-left"></div>
+
+      <div class="heart bg-pink-400"
+           data-aos="flip-left"
+           data-aos-delay="200"></div>
+
+      <div class="heart bg-pink-500"
+           data-aos="flip-left"
+           data-aos-delay="400"></div>
+
+    </div>
+
+  </section>
+
+
+  <!-- 큰 강조 -->
+  <section class="h-[900px] flex flex-col justify-center items-center gap-10">
+
+    <div class="text-4xl font-bold"
+         data-aos="zoom-in">
+      💖 Big Love 💖
+    </div>
+
+    <div class="heart bg-pink-600 scale-150"
+         data-aos="zoom-in-up"
+         data-aos-duration="1500"></div>
+
+  </section>
+
+
+  <!-- 끝 -->
+  <section class="h-[500px] flex items-center justify-center">
+    <p data-aos="fade-up">
+      💕 끝까지 봐줘서 고마워 💕
+    </p>
+  </section>
+
+
+  <script>
+    AOS.init({
+      duration: 1000,
+      once: false
+    });
+  </script>
+
+</body>
+</html>

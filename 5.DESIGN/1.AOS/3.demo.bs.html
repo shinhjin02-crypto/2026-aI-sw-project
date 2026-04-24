@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Bootstrap -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- AOS -->
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
+  <title>Pink Heart Final</title>
+
+  <style>
+    body {
+      background: linear-gradient(to bottom, #ffe4ec, #ffc1d6);
+      color: #c2185b;
+    }
+
+    section {
+      padding: 140px 0;
+    }
+
+    /* 하트 */
+    .heart {
+      position: relative;
+      width: 100px;
+      height: 100px;
+      transform: rotate(-45deg);
+      margin: auto;
+    }
+
+    .heart::before,
+    .heart::after {
+      content: "";
+      position: absolute;
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+    }
+
+    .heart::before { top: -50px; left: 0; }
+    .heart::after { left: 50px; top: 0; }
+
+    /* 색상 */
+    .pink-1 { background: #ffd1dc; }
+    .pink-2 { background: #ff8fab; }
+    .pink-3 { background: #ff4d88; }
+
+    .pink-1::before, .pink-1::after { background: #ffd1dc; }
+    .pink-2::before, .pink-2::after { background: #ff8fab; }
+    .pink-3::before, .pink-3::after { background: #ff4d88; }
+
+    /* 애니메이션 */
+    .float {
+      animation: float 3s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0) rotate(-45deg); }
+      50% { transform: translateY(-15px) rotate(-45deg); }
+    }
+
+    .big-heart {
+      transform: scale(1.5) rotate(-45deg);
+      margin-top: 60px;
+    }
+
+    /* 🔥 간격 통일 클래스 */
+    .section-title {
+      margin-bottom: 3rem;   /* mb-5 */
+      padding-bottom: 0.5rem;
+    }
+
+    .section-content {
+      margin-top: 1.5rem;   /* mt-4 */
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- HERO -->
+  <section class="vh-100 d-flex flex-column justify-content-center align-items-center text-center">
+    <h1 class="display-4 fw-bold mb-3" data-aos="fade-down">
+      💖 Cute Scroll World 💖
+    </h1>
+    <p data-aos="fade-up" data-aos-delay="300">
+      스크롤하면 하트들이 자연스럽게 등장해요
+    </p>
+  </section>
+
+
+  <!-- 하트 3개 -->
+  <section>
+    <div class="container text-center">
+
+      <h2 class="section-title" data-aos="fade-up">
+        💗 Hearts 💗
+      </h2>
+
+      <div class="row g-5 section-content">
+
+        <div class="col-md-4">
+          <div class="heart pink-1 float" data-aos="zoom-in"></div>
+        </div>
+
+        <div class="col-md-4">
+          <div class="heart pink-2 float" data-aos="fade-up" data-aos-delay="200"></div>
+        </div>
+
+        <div class="col-md-4">
+          <div class="heart pink-3 float" data-aos="zoom-in" data-aos-delay="400"></div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- 텍스트 + 하트 -->
+  <section>
+    <div class="container">
+
+      <h2 class="text-center section-title" data-aos="fade-up">
+        💕 Love Section 💕
+      </h2>
+
+      <div class="row align-items-center g-5 section-content">
+
+        <div class="col-md-6 text-center">
+          <div class="heart pink-2" data-aos="fade-right"></div>
+        </div>
+
+        <div class="col-md-6 text-center text-md-start">
+          <p class="fs-5" data-aos="fade-left">
+            하트와 텍스트가 항상 일정한 간격을 유지하도록<br>
+            구조를 통일했어요
+          </p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- 리스트 -->
+  <section>
+    <div class="container text-center">
+
+      <h2 class="section-title" data-aos="fade-up">
+        💗 Heart List 💗
+      </h2>
+
+      <div class="row g-5 section-content">
+
+        <div class="col-md-4">
+          <div class="heart pink-1" data-aos="flip-left"></div>
+        </div>
+
+        <div class="col-md-4">
+          <div class="heart pink-2" data-aos="flip-left" data-aos-delay="200"></div>
+        </div>
+
+        <div class="col-md-4">
+          <div class="heart pink-3" data-aos="flip-left" data-aos-delay="400"></div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- Big Love -->
+  <section>
+    <div class="container text-center">
+
+      <div class="section-title" data-aos="zoom-in">
+        <h2 class="display-5 fw-bold">
+          💖 Big Love 💖
+        </h2>
+      </div>
+
+      <div class="section-content d-flex justify-content-center">
+        <div class="heart pink-3 big-heart"
+             data-aos="zoom-in-up"
+             data-aos-duration="1500"></div>
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- FOOTER -->
+  <section class="text-center">
+    <p data-aos="fade-up">
+      💕 끝까지 봐줘서 고마워 💕
+    </p>
+  </section>
+
+
+  <script>
+    AOS.init({
+      duration: 1000,
+      once: false
+    });
+  </script>
+
+</body>
+</html>
