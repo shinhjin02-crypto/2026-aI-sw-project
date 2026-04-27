@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>색상 변경 버튼</h1>
+    <button onclick="changeColor()">색상 변경</button>
+
+    <script>
+        // 버튼을 누를때마다 red -> blue -> greed -> red ...
+       const colors = ["red", "blue", "green","yellow","pink"];
+       let index = 0;
+
+       function changeColor() {
+            //로직을 구현해서 단계별로 따라가게 만든다
+            //배열의 인덱스라는 특성을 사용해서 풀어보기..
+            
+            document.body.style.backgroundColor = colors[index++];
+            //if (index > 2) {
+            //    index = 0;
+            //}
+            index = (index + 1) % colors.length;
+
+        }
+    </script>
+</body>
+</html>
