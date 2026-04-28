@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #displaykey {
+            font-size: 100px;
+            text-align: center;
+            margin-top: 50px;
+            color: #333;
+        }
+    </style>
+</head>
+
+<body>
+    <input type="text" id="myInput" placeholder="키를 입력하시오.">
+    <div id="displaykey"><!--눌린 키를 표시할 곳--></div>
+    <script>
+        document.getElementById('myInput').addEventListener('keyup', (ev) => {
+            document.getElementById('myInput').addEventListener('keydown', () => {
+                displaykey.textContent = ev.key;
+            })
+            //console.log('키가 입력이 끝남: ', ev.key);
+        });
+
+        document.getElementById('myInput').addEventListener('keydown', (ev) => {
+            console.log('키가 입력됨: ', ev.key);
+        });
+    </script>
+</body>
+
+</html>

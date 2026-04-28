@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #sizeInfo {
+            font-size: 18px;
+            line-height: 1.6;
+            background-color: #f0f0f0;
+            padding: 15px;
+            border-radius: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>당신의 화면 정보는 다음과 같습니다.</h1>
+    <div id="sizeInfo"></div>
+
+    <script>
+        function updatewindowInfo() {
+            const width = window.innerWidth;
+            const height = window.innerHeight;
+
+            const outerwidth = window.outerWidth;
+            const outerheight = window.outerHeight;
+
+            const screenwidth = screen.width;
+            const screenheight = screen.height;
+
+            const sizeInfo = document.getElementById('sizeInfo');
+
+            sizeInfo.innerHTML = `
+                <strong>뷰포트 (window.inner)</strong><br>
+                Width: ${width}px <br>
+                Height: ${height}px <br><br>
+
+                <strong>브라우저 전체 크기 (window.outer)</strong><br>
+                Width: ${outerwidth}px <br>
+                Height: ${outerheight}px <br><br>
+
+                <strong>화면 해상도</strong><br>
+                Width: ${screenwidth}px <br>
+                Height: ${screenheight}px <br>
+            `;
+
+            console.log(`창 크기가 바뀌었음. x=${width}, y=${height}`);
+        }
+
+        window.addEventListener('load', () => {
+            setTimeout(updatewindowInfo, 50);
+        }); //50ms 딜레이를 통해서 브라우저와 랜더링
+
+        //updatewindowInfo(); //최초로딩시에 ~
+
+        window.addEventListener('resize', updatewindowInfo);
+    </script>
+</body>
+
+</html>
