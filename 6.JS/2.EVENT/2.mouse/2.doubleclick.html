@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+
+    <button id="mybutton">클릭하기</button>
+
+    <script>
+        const button = document.getElementById('mybutton');
+
+        button.addEventListener('click', () => {
+            console.log('클릭 OK');
+        });
+        document.getElementById('mybutton').addEventListener('dblclick', () => {
+            console.log('더블클릭 OK');
+        });
+    </script>
+    
+</body>
+</html>

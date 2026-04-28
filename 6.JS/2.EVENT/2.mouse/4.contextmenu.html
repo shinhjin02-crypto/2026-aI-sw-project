@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <style>
+        #myButton {
+            height: 100px;
+            background-color: lightblue;
+            cursor: pointer;
+        }
+    </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+
+    <div id="myButton">우클릭 하시오.</div>
+
+    <script>
+        const btn = document.getElementById('myButton');
+
+        btn.addEventListener('contextmenu', (ev) => {
+            ev.preventDefault(); // 우클릭 메뉴 막기
+            console.log('우클릭을 성공함');
+        });
+    </script>
+
+</body>
+</html>
