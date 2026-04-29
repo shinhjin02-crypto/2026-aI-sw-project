@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .done{
+            text-decoration: line-through;
+            color: gray;
+        }
+        li {
+            list-style: none;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Todd 리스트</h1>
+    <input type="text" id="newtodo" placeholder="할 일 입력">
+    <button id="add-todo">추가</button>
+    <ul id="todo-list"><!--할 일 들이 추가, 표시 될 곳--></ul>
+    <script>
+
+        const newtodo = document.getElementById('newtodo');
+        const addBtn = document.getElementById('add-todo').addEventListener('click', () => {
+
+        });
+        const todolist = document.getElementById('todolist');
+
+        addBtn.addEventListener('click', () => {
+            console.log('버튼 클릭');
+
+            const li = document.createElement('li');
+            li.textContent = newtodo.value;
+
+
+            li.addEventListener('click', () => {
+                li.classList.toggle('done');
+            });
+
+            todolist.appendChild(li);
+            newtodo.value = '';
+        });
+    </script>
+</body>
+
+</html>
