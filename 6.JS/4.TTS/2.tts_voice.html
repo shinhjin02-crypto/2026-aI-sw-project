@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <h1>TTS 예제</h1>
+
+    <textarea id="text" rows="4" cols="50">안녕. 이건 한글이야.</textarea><br>
+    <div class="controls">
+        <select id="VoiceSelect"></select>
+        <button onclick="speak()">읽어주기</button>
+    </div>
+
+    <button onclick="speak()">읽어주기</button>
+
+
+    <script>
+
+        const VoiceSelect = document.getElementById('VocieSelect');
+        //web speech api를 사용해서...
+        if ('speechSynthesis' in window) {
+            const updateVoices = () => {
+                const voices = window.speechSynthesis.getVoices();
+                console.log('사용 가능한 목소리 목록: ', voices);
+            }
+        } else {
+            alert('이 브라우저는 음성 기능을 지원하지 않습니다.');
+        }
+
+        function speak() {
+            const text = document.getElementById('text').value;
+            //console.log(text);
+
+            const speech = new SpeechSynthesisUtterance(text);
+            window.speechSynthesis.speak(speech);
+        }
+    </script>
+
+</body>
+
+</html>
