@@ -1,0 +1,160 @@
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+        body {
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            /* 베이비핑크 그라데이션 */
+            background: linear-gradient(135deg, #ffd6e7, #ffeaf4, #fff0f6);
+            font-family: "Arial", sans-serif;
+        }
+
+        /* 메인 박스 */
+        .stopwatch-box {
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(12px);
+            padding: 40px 50px;
+            border-radius: 30px;
+
+            text-align: center;
+
+            box-shadow: 0 15px 35px rgba(255, 182, 193, 0.4);
+            border: 2px solid #ffd1dc;
+        }
+
+        /* 시간 표시 */
+        #display {
+            font-size: 64px;
+            font-weight: bold;
+            color: #ff6fa1;
+            margin-bottom: 30px;
+            letter-spacing: 3px;
+            text-shadow: 0 2px 10px rgba(255, 105, 180, 0.2);
+        }
+
+        /* 버튼 컨테이너 */
+        .button-container {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+        }
+
+        /* 기본 버튼 */
+        button {
+            padding: 12px 22px;
+            font-size: 15px;
+            border: none;
+            border-radius: 999px;
+            /* 완전 둥글게 = 귀여움 포인트 */
+            cursor: pointer;
+            transition: 0.25s ease;
+            font-weight: bold;
+        }
+
+        /* START 버튼 */
+        #startBtn {
+            background: linear-gradient(135deg, #ff8fb1, #ffb3c7);
+            color: white;
+        }
+
+        /* STOP 버튼 */
+        #stopBtn {
+            background: linear-gradient(135deg, #ff6f91, #ff8fab);
+            color: white;
+        }
+
+        /* RESET 버튼 */
+        #resetBtn {
+            background: linear-gradient(135deg, #a0c4ff, #bdb2ff);
+            color: white;
+        }
+
+        /* hover 효과 */
+        button:hover {
+            transform: scale(1.08);
+            filter: brightness(1.05);
+        }
+
+        /* 눌림 효과 */
+        button:active {
+            transform: scale(0.95);
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 스톱워치 전체 -->
+    <div class="stopwatch-box">
+        <!-- 스탑워치 표시 영역 -->
+        <div id="display">00:00.00</div>
+        <!-- 스탑워치 버튼 컨테이너 -->
+        <div class="button-container">
+            <button id="startBtn">시작</button>
+            <button id="stopBtn">중지</button>
+            <button id="resetBtn">초기화</button>
+        </div>
+    </div>
+    <script>
+        // 1. DOM요소를 다 가져온다
+        const display = document.getElementById('display');
+        const startButton = document.getElementById('startBtn');
+        const stopButton = document.getElementById('stopBtn');
+        const resetButton = document.getElementById('resetBtn');
+
+        let startTime; // 스톱워치 시작 시간
+        let difference = 0; // 경과 시간
+        let running = false; // 현재 타이머 상태
+        let timerId; // setInterval 저장 변수
+        let updatedTime; // 현재 시간
+
+        function startTimer() {
+            if (running) return;
+
+            running = true;
+            startTime = new Date().getTime() - difference; // 멈췄다 재시작해도 이어지게
+            timerId = setInterval(updateTimer, 10);
+        }
+
+        function stopTimer() {
+            running = false;
+            clearInterval(timerId);
+        }
+
+        function resetTimer() {
+            running = false;
+            clearInterval(timerId);
+
+            difference = 0; // 경과 시간 초기화
+            display.textContent = "00:00.00"; // 화면 초기화
+        }
+
+        function updateTimer() {
+            updatedTime = new Date().getTime();
+            difference = updatedTime - startTime; // 경과 시간 계산
+
+            let minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60)); // 흘러간 ms 에서 분 계산
+            let seconds = Math.floor((difference % (1000 * 60)) / (1000)); // 거기에서 초 계산
+            let milliseconds = Math.floor((difference % 1000) / 10); // 나머지 ms 계산
+
+            // console.log(`흘러간 시간 계산 ${minutes}분, ${seconds}초, ${milliseconds}ms`)
+            display.textContent =
+                (minutes < 10 ? '0' + minutes : minutes) + ':' +
+                (seconds < 10 ? '0' + seconds : seconds) + '.' +
+                (milliseconds < 10 ? '0' + milliseconds : milliseconds);
+        }
+
+        // 버튼 이벤트 연결
+        startButton.addEventListener('click', startTimer);
+        stopButton.addEventListener('click', stopTimer);
+        resetButton.addEventListener('click', resetTimer);
+    </script>
+</body>
+
+</html>
