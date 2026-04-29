@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        input {
+            padding: 10px;
+            font-size: 16px;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0px;
+        }
+
+        li {
+            padding: 5px;
+            font-size: 18px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>실시간 검색 필터</h1>
+    <input type="text" id="searchInput" placeholder="검색어...">
+    <ul id="itemList">
+        <li>Apple</li>
+        <li>Banana</li>
+        <li>Orange</li>
+        <li>Grape</li>
+        <li>Strawberry</li>
+        <li>Watermelon</li>
+        <li>Mango</li>
+        <li>Pineapple</li>
+        <li>Peach</li>
+        <li>Pear</li>
+        <li>Cherry</li>
+        <li>Lemon</li>
+        <li>Lime</li>
+        <li>Blueberry</li>
+        <li>Raspberry</li>
+        <li>Kiwi</li>
+        <li>Papaya</li>
+        <li>Coconut</li>
+        <li>Pomegranate</li>
+        <li>Plum</li>
+    </ul>
+
+    <script>
+        const input = document.getElementById("searchInput");
+        const items = document.querySelectorAll("#itemList li");
+
+        let timer; // 핵심: 타이머 저장
+
+        input.addEventListener("input", () => {
+            clearTimeout(timer); // 이전 타이머 취소
+
+            timer = setTimeout(() => {
+                const keyword = input.value.toLowerCase();
+
+                items.forEach((item) => {
+                    const text = item.textContent.toLowerCase();
+
+                    if (text.includes(keyword)) {
+                        item.style.display = "block";
+                    } else {
+                        item.style.display = "none";
+                    }
+                });
+            }, 1000); // 1초 멈추면 실행
+        });
+        //디바운스 구현하기 (setTimeout 을 통해서...)
+    </script>
+</body>
+
+</html>
