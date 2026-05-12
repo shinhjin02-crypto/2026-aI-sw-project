@@ -10,3 +10,5 @@ def generate_random_password(length=8):
 print(generate_random_password())
 print(generate_random_password(16))
 print(generate_random_password(32))
+
+#수정
