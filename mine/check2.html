@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>공유 일정 관리</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+      background: linear-gradient(135deg, #f8fafc, #eef3f8);
+      color: #111827;
+    }
+
+    .login-page {
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .login-box {
+      width: 380px;
+      padding: 42px;
+      border-radius: 28px;
+      background: rgba(255, 255, 255, 0.9);
+      box-shadow: 0 24px 60px rgba(15, 23, 42, 0.12);
+      border: 1px solid rgba(226, 232, 240, 0.8);
+      text-align: center;
+    }
+
+    .login-box h1 {
+      color: #0f172a;
+      margin-bottom: 28px;
+      font-size: 30px;
+      letter-spacing: -1px;
+    }
+
+    .login-box input {
+      width: 100%;
+      padding: 14px 15px;
+      margin-bottom: 14px;
+      border: 1px solid #e2e8f0;
+      border-radius: 14px;
+      font-size: 15px;
+      background: #f8fafc;
+      outline: none;
+    }
+
+    input:focus,
+    select:focus {
+      border-color: #0f2a5f;
+      background: white;
+      box-shadow: 0 0 0 4px rgba(15, 42, 95, 0.08);
+    }
+
+    button {
+      transition: 0.2s ease;
+    }
+
+    button:hover {
+      transform: translateY(-1px);
+    }
+
+    .login-box button,
+    .month-control button,
+    .add-btn {
+      background: #0f172a;
+      color: white;
+      border: none;
+      border-radius: 14px;
+      cursor: pointer;
+      font-weight: 600;
+    }
+
+    .login-box button {
+      width: 100%;
+      padding: 14px;
+      font-size: 16px;
+      margin-top: 8px;
+    }
+
+    .main-page {
+      display: none;
+      min-height: 100vh;
+    }
+
+    header {
+      height: 76px;
+      background: rgba(255, 255, 255, 0.82);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(226, 232, 240, 0.8);
+      display: flex;
+      align-items: center;
+      padding: 0 36px;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    .logo {
+      font-size: 21px;
+      font-weight: 800;
+      color: #0f172a;
+      letter-spacing: -0.5px;
+    }
+
+    .container {
+      max-width: 1220px;
+      margin: 44px auto;
+      background: rgba(255, 255, 255, 0.92);
+      padding: 38px;
+      border-radius: 30px;
+      box-shadow: 0 24px 70px rgba(15, 23, 42, 0.1);
+      border: 1px solid rgba(226, 232, 240, 0.9);
+    }
+
+    .month-control {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 34px;
+      flex-wrap: wrap;
+    }
+
+    #currentMonth {
+      font-size: 30px;
+      font-weight: 800;
+      color: #0f172a;
+      min-width: 190px;
+      text-align: center;
+      letter-spacing: -1px;
+    }
+
+    .month-control button {
+      padding: 11px 18px;
+      font-size: 14px;
+    }
+
+    .month-control input,
+    .month-control select {
+      padding: 10px 12px;
+      border: 1px solid #e2e8f0;
+      border-radius: 14px;
+      font-size: 14px;
+      background: #f8fafc;
+      outline: none;
+    }
+
+    #moveYear {
+      width: 105px;
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+      border-radius: 22px;
+      border: 1px solid #e5e7eb;
+      background: white;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      background: white;
+      min-width: 900px;
+    }
+
+    th {
+      background: #f8fafc;
+      color: #334155;
+      padding: 16px 14px;
+      border-bottom: 1px solid #e5e7eb;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    td {
+      padding: 14px;
+      border-bottom: 1px solid #f1f5f9;
+      text-align: center;
+      background: white;
+    }
+
+    tr:last-child td {
+      border-bottom: none;
+    }
+
+    tbody tr:hover td {
+      background: #fafcff;
+    }
+
+    tbody tr {
+      cursor: grab;
+    }
+
+    tbody tr:active {
+      cursor: grabbing;
+    }
+
+    .drag-handle {
+      color: #94a3b8;
+      font-size: 18px;
+      user-select: none;
+    }
+
+    td input[type="text"] {
+      width: 100%;
+      padding: 11px 12px;
+      border: 1px solid transparent;
+      border-radius: 12px;
+      background: #f8fafc;
+      outline: none;
+      font-size: 14px;
+    }
+
+    input[type="checkbox"] {
+      width: 19px;
+      height: 19px;
+      cursor: pointer;
+      accent-color: #0f172a;
+    }
+
+    select {
+      padding: 10px 12px;
+      border-radius: 12px;
+      border: 1px solid #e2e8f0;
+      background: #f8fafc;
+      outline: none;
+      font-size: 14px;
+    }
+
+    .add-btn {
+      margin-top: 22px;
+      padding: 13px 20px;
+      font-size: 15px;
+    }
+
+    .delete-btn {
+      padding: 9px 13px;
+      background: #fff1f2;
+      color: #be123c;
+      border: 1px solid #ffe4e6;
+      border-radius: 12px;
+      cursor: pointer;
+      font-weight: 600;
+    }
+
+    .delete-btn:hover {
+      background: #ffe4e6;
+    }
+
+    @media (max-width: 768px) {
+      header {
+        padding: 0 20px;
+      }
+
+      .container {
+        margin: 24px 14px;
+        padding: 22px;
+        border-radius: 24px;
+      }
+
+      #currentMonth {
+        font-size: 25px;
+        width: 100%;
+      }
+
+      .login-box {
+        width: calc(100% - 32px);
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="login-page" id="loginPage">
+    <div class="login-box">
+      <h1>Welcome</h1>
+
+      <input type="text" id="userId" placeholder="아이디">
+      <input type="password" id="userPw" placeholder="비밀번호">
+
+      <button id="loginBtn">로그인</button>
+    </div>
+  </div>
+
+  <div class="main-page" id="mainPage">
+    <header>
+      <div class="logo">회사 로고</div>
+    </header>
+
+    <div class="container">
+      <div class="month-control">
+        <button id="prevMonth">이전 달</button>
+
+        <div id="currentMonth"></div>
+
+        <button id="nextMonth">다음 달</button>
+
+        <input type="number" id="moveYear" placeholder="년도" min="1900">
+
+        <select id="moveMonth">
+          <option value="1">1월</option>
+          <option value="2">2월</option>
+          <option value="3">3월</option>
+          <option value="4">4월</option>
+          <option value="5">5월</option>
+          <option value="6">6월</option>
+          <option value="7">7월</option>
+          <option value="8">8월</option>
+          <option value="9">9월</option>
+          <option value="10">10월</option>
+          <option value="11">11월</option>
+          <option value="12">12월</option>
+        </select>
+
+        <button id="moveBtn">이동</button>
+
+        <select id="sortSelect">
+          <option value="custom">직접 정렬</option>
+          <option value="latest">최신 등록순</option>
+          <option value="oldest">오래된 등록순</option>
+          <option value="korean">가나다순</option>
+        </select>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>이동</th>
+              <th>카테고리</th>
+              <th>년도 / 월</th>
+              <th>체크 여부</th>
+              <th>승인 여부</th>
+              <th>삭제</th>
+            </tr>
+          </thead>
+
+          <tbody id="tableBody"></tbody>
+        </table>
+      </div>
+
+      <button id="addRowBtn" class="add-btn">내용 추가</button>
+    </div>
+  </div>
+
+  <script>
+    const loginPage = document.getElementById("loginPage");
+    const mainPage = document.getElementById("mainPage");
+
+    const userId = document.getElementById("userId");
+    const userPw = document.getElementById("userPw");
+    const loginBtn = document.getElementById("loginBtn");
+
+    const currentMonthText = document.getElementById("currentMonth");
+    const prevMonthBtn = document.getElementById("prevMonth");
+    const nextMonthBtn = document.getElementById("nextMonth");
+    const tableBody = document.getElementById("tableBody");
+    const addRowBtn = document.getElementById("addRowBtn");
+
+    const moveYear = document.getElementById("moveYear");
+    const moveMonth = document.getElementById("moveMonth");
+    const moveBtn = document.getElementById("moveBtn");
+
+    const sortSelect = document.getElementById("sortSelect");
+
+    let dragStartIndex = null;
+
+    let today = new Date();
+    let currentYear = today.getFullYear();
+    let currentMonth = today.getMonth();
+
+    const users = [
+      { id: "user1", pw: "1111" },
+      { id: "user2", pw: "2222" }
+    ];
+
+    let monthlyData = {};
+
+    function getMonthKey() {
+      return `${currentYear}-${currentMonth + 1}`;
+    }
+
+    function makeDefaultRows() {
+      return [
+        {
+          category: "새 카테고리",
+          date: `${currentYear}년 ${currentMonth + 1}월`,
+          checked: false,
+          approval: "미승인",
+          createdAt: Date.now()
+        }
+      ];
+    }
+
+    function getCurrentRows() {
+      const key = getMonthKey();
+
+      if (!monthlyData[key]) {
+        monthlyData[key] = makeDefaultRows();
+      }
+
+      return monthlyData[key];
+    }
+
+    function login() {
+      const idValue = userId.value;
+      const pwValue = userPw.value;
+
+      const foundUser = users.find(user => {
+        return user.id === idValue && user.pw === pwValue;
+      });
+
+      if (foundUser) {
+        loginPage.style.display = "none";
+        mainPage.style.display = "block";
+        renderTable();
+      } else {
+        alert("아이디 또는 비밀번호가 틀렸습니다.");
+      }
+    }
+
+    loginBtn.addEventListener("click", login);
+
+    userId.addEventListener("keydown", (event) => {
+      if (event.key === "Enter") {
+        login();
+      }
+    });
+
+    userPw.addEventListener("keydown", (event) => {
+      if (event.key === "Enter") {
+        login();
+      }
+    });
+
+    function renderTable() {
+      const displayMonth = currentMonth + 1;
+      const rows = getCurrentRows();
+
+      currentMonthText.textContent = `${currentYear}년 ${displayMonth}월`;
+
+      moveYear.value = currentYear;
+      moveMonth.value = displayMonth;
+
+      tableBody.innerHTML = "";
+
+      rows.forEach((row, index) => {
+        const tr = document.createElement("tr");
+
+        tr.draggable = true;
+
+        tr.addEventListener("dragstart", () => {
+          dragStartIndex = index;
+        });
+
+        tr.addEventListener("dragover", (event) => {
+          event.preventDefault();
+        });
+
+        tr.addEventListener("drop", () => {
+          moveRow(dragStartIndex, index);
+        });
+
+        tr.innerHTML = `
+          <td>
+            <span class="drag-handle">⋮⋮</span>
+          </td>
+
+          <td>
+            <input type="text"
+              value="${row.category}"
+              onchange="changeCategory(${index}, this.value)">
+          </td>
+
+          <td>
+            <input type="text"
+              value="${row.date}"
+              onchange="changeDate(${index}, this.value)">
+          </td>
+
+          <td>
+            <input type="checkbox"
+              ${row.checked ? "checked" : ""}
+              onchange="changeCheck(${index}, this.checked)">
+          </td>
+
+          <td>
+            <select onchange="changeApproval(${index}, this.value)">
+              <option value="미승인" ${row.approval === "미승인" ? "selected" : ""}>미승인</option>
+              <option value="승인" ${row.approval === "승인" ? "selected" : ""}>승인</option>
+            </select>
+          </td>
+
+          <td>
+            <button class="delete-btn" onclick="deleteRow(${index})">삭제</button>
+          </td>
+        `;
+
+        tableBody.appendChild(tr);
+      });
+    }
+
+    function changeCategory(index, value) {
+      const rows = getCurrentRows();
+      rows[index].category = value;
+    }
+
+    function changeDate(index, value) {
+      const rows = getCurrentRows();
+      rows[index].date = value;
+    }
+
+    function changeCheck(index, value) {
+      const rows = getCurrentRows();
+      rows[index].checked = value;
+    }
+
+    function changeApproval(index, value) {
+      const rows = getCurrentRows();
+      rows[index].approval = value;
+    }
+
+    function deleteRow(index) {
+      const rows = getCurrentRows();
+      rows.splice(index, 1);
+      renderTable();
+    }
+
+    function moveRow(fromIndex, toIndex) {
+      const rows = getCurrentRows();
+
+      if (fromIndex === null || fromIndex === toIndex) {
+        return;
+      }
+
+      const movedItem = rows.splice(fromIndex, 1)[0];
+      rows.splice(toIndex, 0, movedItem);
+
+      sortSelect.value = "custom";
+      dragStartIndex = null;
+
+      renderTable();
+    }
+
+    function sortRows() {
+      const rows = getCurrentRows();
+      const sortType = sortSelect.value;
+
+      if (sortType === "latest") {
+        rows.sort((a, b) => b.createdAt - a.createdAt);
+      }
+
+      if (sortType === "oldest") {
+        rows.sort((a, b) => a.createdAt - b.createdAt);
+      }
+
+      if (sortType === "korean") {
+        rows.sort((a, b) => {
+          return a.category.localeCompare(b.category, "ko");
+        });
+      }
+
+      renderTable();
+    }
+
+    sortSelect.addEventListener("change", sortRows);
+
+    addRowBtn.addEventListener("click", () => {
+      const rows = getCurrentRows();
+
+      rows.push({
+        category: "새 카테고리",
+        date: `${currentYear}년 ${currentMonth + 1}월`,
+        checked: false,
+        approval: "미승인",
+        createdAt: Date.now()
+      });
+
+      renderTable();
+    });
+
+    prevMonthBtn.addEventListener("click", () => {
+      currentMonth--;
+
+      if (currentMonth < 0) {
+        currentMonth = 11;
+        currentYear--;
+      }
+
+      sortSelect.value = "custom";
+      renderTable();
+    });
+
+    nextMonthBtn.addEventListener("click", () => {
+      currentMonth++;
+
+      if (currentMonth > 11) {
+        currentMonth = 0;
+        currentYear++;
+      }
+
+      sortSelect.value = "custom";
+      renderTable();
+    });
+
+    moveBtn.addEventListener("click", () => {
+      const selectedYear = Number(moveYear.value);
+      const selectedMonth = Number(moveMonth.value);
+
+      if (!selectedYear || selectedYear < 1900) {
+        alert("올바른 년도를 입력해주세요.");
+        return;
+      }
+
+      currentYear = selectedYear;
+      currentMonth = selectedMonth - 1;
+
+      sortSelect.value = "custom";
+      renderTable();
+    });
+  </script>
+
+</body>
+</html>
