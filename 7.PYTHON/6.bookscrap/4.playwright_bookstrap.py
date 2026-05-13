@@ -5,9 +5,9 @@ with sync_playwright() as p:
     page = browser.new_page()
     page.goto("https://books.toscrape.com/")
 
-    #책 목록 가져오기
-    books = page.locator("acticle.product_pod")
-    #print(books.count())
+    # 책 목록을 가져오기
+    books = page.locator("article.product_pod")
+    # print(books.count())
 
     for i in range(books.count()):
         book = books.nth(i)
@@ -16,5 +16,9 @@ with sync_playwright() as p:
         print(title)
 
         price = book.locator(".price_color").inner_text()
-        price = price.replace("", " ")
+        price = price.replace("£", "")
         print(price)
+
+        rating = book.locator("p.star-rating").get_attribute("class")
+        rating = rating.split()[-1]
+        print(rating)
