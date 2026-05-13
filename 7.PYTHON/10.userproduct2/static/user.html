@@ -1,0 +1,17 @@
+<html lang="en">
+    <body>
+        <form>
+            <label>User 검색</label>
+            <form id="search">
+                <ul id="userlist"></ul>
+            </form>
+
+            <script>
+                document.getElementById('search').addEventListener('submit', () => {
+                    const id = document.getElementById('id').value;
+                    fetch(`/api/users/${id}`).then
+                })
+            </script>
+        </form>
+    </body>
+</html>
