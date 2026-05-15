@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <!-- 1. 버튼을 클릭하면, 이미지를 화면에 출력한다. -->
+    <!-- 요청해야할 주소는 dog.ceo 에 방문해서 random 강아지 사진을 받아오는 스펙을 찾아서.. -->
+    <h1>랜덤 사진 표시</h1>
+    <button id="loadBtn">이미지 로딩</button>
+    <div id="result"><!-- 사진을 출력할 곳--></div>
+    <script>
+        document.getElementById('loadBtn').addEventListener('click', () => {
+            // console.log("클릭");
+            fetch('https://dog.ceo/api/breeds/image/random2')
+                .then(resp => resp.json())
+                .then(data => {
+                    if (data.status == "success") {
+                        displayResult(data);
+                    } else {
+                        displayError(data);
+                    }
+                })
+                .catch(error => {
+                    console.error("알수 없는 오류: ", error);
+                    displayError(data);
+                });
+
+            function displayError(data) {
+                const result = document.getElementById('result');
+                result.innerHTML = `
+                    <p style="color: red;">이미지를 불러오지 못했습니다. 참고: ${data.message}</p>
+                `
+            }
+
+            function displayResult(data) {
+                console.log("화면에 DOM 그리기: ", data)
+                const result = document.getElementById('result');
+                result.innerHTML = `
+                    <img src="${data.message}" width="400px">
+                `;
+            }
+        })
+    </script>
+</body>
+</html>
