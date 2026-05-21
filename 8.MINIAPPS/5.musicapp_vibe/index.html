@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Music Vibe - 하얀색 & 파스텔 핑크 음악 SNS</title>
+  <!-- SEO Meta Tags -->
+  <meta name="description" content="Music Vibe - 좋아하는 음악을 찾고 해시태그와 댓글로 소통하는 하얀색 & 파스텔 핑크 감성 음악 SNS입니다.">
+  <meta name="keywords" content="음악, SNS, 유튜브, 검색, 해시태그, 댓글, 커뮤니티">
+  
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Custom Stylesheet -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div id="app">
+    <!-- Global Header -->
+    <header>
+      <div class="container">
+        <!-- Logo -->
+        <div class="logo" id="logo-btn">
+          <span>🌸</span> MUSIC VIBE
+        </div>
+        
+        <!-- Navigation Links -->
+        <nav>
+          <ul class="nav-links">
+            <li class="nav-item active" id="nav-home" data-view="home">
+              <i class="fa-solid fa-house"></i> Home
+            </li>
+            <li class="nav-item" id="nav-top-likes" data-view="top-likes">
+              <i class="fa-solid fa-heart"></i> Top Likes
+            </li>
+            <li class="nav-item" id="nav-hashtags" data-view="hashtags">
+              <i class="fa-solid fa-hashtag"></i> Hashtags
+            </li>
+            <li class="nav-item" id="nav-profile" data-view="profile" style="display: none;">
+              <i class="fa-solid fa-user"></i> Profile
+            </li>
+            <li class="nav-item" id="nav-admin" data-view="admin" style="display: none;">
+              <i class="fa-solid fa-lock"></i> Admin
+            </li>
+          </ul>
+          
+          <!-- Authentication & Notification Actions -->
+          <div class="nav-auth">
+            <!-- Notifications Button -->
+            <button class="notif-btn" id="notif-btn-icon" style="display: none;" title="알림 확인">
+              <i class="fa-solid fa-bell fa-lg"></i>
+              <span class="notif-badge" id="notif-badge-count" style="display: none;">0</span>
+            </button>
+            
+            <!-- Notifications Dropdown -->
+            <div class="notif-dropdown" id="notification-dropdown">
+              <div class="notif-header">
+                <span>실시간 알림 🌸</span>
+                <button class="btn btn-sm btn-muted" id="notif-clear-all" style="font-size: 0.75rem;">모두 읽음</button>
+              </div>
+              <div class="notif-list" id="notification-list-items">
+                <!-- Notifications dynamically loaded -->
+              </div>
+            </div>
+            
+            <!-- User Status & Login/Logout Buttons -->
+            <div id="user-status-container" style="display: flex; align-items: center; gap: 12px;">
+              <!-- User Tag (Loaded dynamically when logged in) -->
+              <span class="user-tag" id="user-display-tag" style="display: none;"></span>
+              <button class="btn btn-primary" id="header-login-btn">
+                <i class="fa-solid fa-right-to-bracket"></i> Login
+              </button>
+              <button class="btn btn-muted" id="header-logout-btn" style="display: none;">
+                <i class="fa-solid fa-right-from-bracket"></i> Logout
+              </button>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="container">
+      
+      <!-- 1. Home View -->
+      <section id="home-view" class="view-section active">
+        <div class="view-header">
+          <div>
+            <h1 class="view-title">Music Collection</h1>
+            <p class="view-subtitle">유튜브 인기 음악을 검색하고, 어울리는 해시태그와 생각을 사람들과 나눠보세요.</p>
+          </div>
+          <button class="btn btn-primary" id="youtube-import-trigger">
+            <i class="fa-brands fa-youtube"></i> YouTube 곡 추가하기
+          </button>
+        </div>
+
+        <!-- YouTube Fast Import Bar -->
+        <div class="import-section" id="fast-import-bar" style="display: none;">
+          <div class="import-header">
+            <i class="fa-brands fa-youtube fa-lg"></i> 유튜브 링크로 음악 추가하기
+          </div>
+          <div class="import-row">
+            <input type="text" id="youtube-url-input" placeholder="여기에 유튜브 동영상 주소(URL)를 입력해주세요 (예: https://www.youtube.com/watch?v=...)">
+            <button class="btn btn-primary" id="youtube-extract-btn">가져오기</button>
+            <button class="btn btn-muted" id="youtube-import-cancel">닫기</button>
+          </div>
+        </div>
+
+        <!-- Search & Filter Controls -->
+        <div class="controls-bar">
+          <div class="search-box">
+            <i class="fa-solid fa-magnifying-glass search-icon"></i>
+            <input type="text" id="music-search-input" placeholder="제목, 가수, 내용 설명, 또는 해시태그를 검색하세요...">
+          </div>
+          <div class="filter-actions">
+            <!-- Active tag filter label -->
+            <div class="active-filter-tag" id="active-hashtag-filter" style="display: none;">
+              <span id="active-hashtag-name">#Kpop</span>
+              <span id="clear-hashtag-filter-btn" title="필터 해제"><i class="fa-solid fa-xmark"></i></span>
+            </div>
+            
+            <!-- Sort dropdown -->
+            <select class="sort-select" id="music-sort-select">
+              <option value="newest">최신 등록순</option>
+              <option value="likes">좋아요 많은순</option>
+              <option value="comments">댓글 많은순</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Music Cards Grid Container -->
+        <div class="music-grid" id="music-cards-container">
+          <!-- Dynamic Music Cards -->
+        </div>
+      </section>
+
+      <!-- 2. Top Likes View -->
+      <section id="top-likes-view" class="view-section">
+        <div class="view-header">
+          <div>
+            <h1 class="view-title">Top Liked Music</h1>
+            <p class="view-subtitle">유저들에게 가장 많은 사랑(좋아요)을 받은 인기 음악들을 만나보세요!</p>
+          </div>
+        </div>
+        <div class="music-grid" id="top-likes-cards-container">
+          <!-- Dynamic Ranked Cards -->
+        </div>
+      </section>
+
+      <!-- 3. Hashtags View -->
+      <section id="hashtags-view" class="view-section">
+        <div class="view-header">
+          <div>
+            <h1 class="view-title">Trending Hashtags</h1>
+            <p class="view-subtitle">가장 많이 등록된 핫한 해시태그 키워드 랭킹입니다. 태그를 클릭하여 관련된 음악을 즉시 찾아보세요.</p>
+          </div>
+        </div>
+        
+        <div class="hashtags-container">
+          <div class="hashtags-cloud" id="hashtags-cloud-container">
+            <!-- Dynamic tags -->
+          </div>
+        </div>
+      </section>
+
+      <!-- 4. Song Detail View -->
+      <section id="song-detail-view" class="view-section">
+        <div class="view-header" style="margin-bottom: 20px;">
+          <button class="btn btn-secondary btn-sm" id="detail-back-btn">
+            <i class="fa-solid fa-arrow-left"></i> 목록으로 가기
+          </button>
+        </div>
+
+        <!-- Split Layout: Iframe Player vs Metadata Info -->
+        <div class="details-split">
+          <!-- Left Column (YouTube Video) -->
+          <div class="details-media-box" id="detail-video-container">
+            <!-- Loaded as YouTube Iframe inside JS -->
+          </div>
+          
+          <!-- Right Column (Meta & Interactions) -->
+          <div class="details-meta-box">
+            <span class="details-artist" id="detail-artist-text">가수 이름</span>
+            <h1 class="details-title" id="detail-title-text">노래 제목</h1>
+            
+            <p class="details-description" id="detail-description-text">노래에 대한 상세 설명 정보...</p>
+            
+            <!-- Likes Counter & Heart Toggle Button -->
+            <div class="details-likes-row">
+              <button class="heart-toggle-btn" id="detail-heart-btn" title="좋아요 토글">
+                <i class="fa-solid fa-heart"></i>
+              </button>
+              <div>
+                <div class="likes-count-display"><span id="detail-likes-count">0</span> Likes</div>
+              </div>
+            </div>
+            
+            <!-- Hashtag Manager Box -->
+            <div class="hashtag-manager-title">
+              <i class="fa-solid fa-tags"></i> 해시태그 목록
+            </div>
+            <div class="hashtag-manager-list" id="detail-tags-list">
+              <!-- Loaded dynamically -->
+            </div>
+            
+            <!-- Add Hashtag input (visible if logged in) -->
+            <div class="add-tag-box" id="detail-add-tag-form" style="display: none;">
+              <input type="text" id="detail-new-tag-input" placeholder="새 해시태그 입력 (엔터 또는 추가 클릭)">
+              <button class="btn btn-primary btn-sm" id="detail-add-tag-btn">추가</button>
+            </div>
+            <p class="text-muted" id="detail-tag-guest-msg" style="font-size: 0.85rem; color: var(--text-muted); margin-top: 10px;">
+              <i class="fa-solid fa-circle-info"></i> 해시태그를 추가/삭제하려면 로그인이 필요합니다.
+            </p>
+          </div>
+        </div>
+
+        <!-- Comments Area (Bottom Column) -->
+        <div class="comments-container">
+          <h2 class="comments-header"><i class="fa-solid fa-comments"></i> Comments (<span id="detail-comments-count">0</span>)</h2>
+          
+          <!-- Comments List -->
+          <div class="comments-list" id="detail-comments-list">
+            <!-- Dynamic comments loaded -->
+          </div>
+          
+          <!-- Add Comment Box -->
+          <div class="comment-form-container">
+            <!-- Active user avatar -->
+            <div class="comment-avatar" id="comment-active-avatar">?</div>
+            
+            <div class="comment-form" id="detail-comment-form" style="display: none;">
+              <div class="comment-textarea-wrapper">
+                <!-- Textarea -->
+                <textarea id="comment-text-input" placeholder="음악에 대한 감상이나 다른 유저에 대한 답글을 남겨주세요! (멘션하려면 @ 입력 후 닉네임을 선택하세요)"></textarea>
+                
+                <!-- Mention Suggestion Box -->
+                <div class="mention-suggestions" id="mention-users-list">
+                  <!-- Auto populated dynamic users list -->
+                </div>
+              </div>
+              <button class="btn btn-primary" id="comment-submit-btn">
+                <i class="fa-solid fa-paper-plane"></i> 댓글 작성하기
+              </button>
+            </div>
+            
+            <!-- Prompt login for Guest user -->
+            <div class="comment-login-prompt" id="comment-guest-prompt" style="flex-grow: 1;">
+              의견을 공유하려면 <span id="comment-login-trigger">로그인</span>이 필요합니다. 🌸
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 5. User Profile View -->
+      <section id="profile-view" class="view-section">
+        <div class="profile-card">
+          <div class="profile-avatar" id="profile-avatar-icon">U</div>
+          <div class="profile-details">
+            <h2 id="profile-nickname">사용자 닉네임</h2>
+            <p>아이디: <strong id="profile-user-id">user1</strong> | 역할: <span id="profile-user-role" style="font-weight: 600;">일반회원</span></p>
+            <p style="margin-top: 4px; font-size: 0.85rem; color: var(--text-muted);">🌸 MUSIC VIBE에서 해시태그를 추가하고 음악 애호가들과 소통해 보세요!</p>
+          </div>
+        </div>
+
+        <!-- My written comments -->
+        <div class="my-comments-section">
+          <h2 class="comments-header"><i class="fa-solid fa-message"></i> 내가 남긴 댓글 활동 (<span id="profile-comments-count">0</span>)</h2>
+          <div class="my-comments-list" id="profile-comments-list-items">
+            <!-- Dynamic personal comment list -->
+          </div>
+        </div>
+      </section>
+
+      <!-- 6. Admin Panel View -->
+      <section id="admin-view" class="view-section">
+        <div class="view-header">
+          <div>
+            <h1 class="view-title">Admin Management</h1>
+            <p class="view-subtitle">관리자용 백오피스입니다. 가입회원, 등록 곡, 게시된 모든 댓글을 직관적으로 관리할 수 있습니다.</p>
+          </div>
+          <button class="btn btn-danger" id="admin-reset-db-btn">
+            <i class="fa-solid fa-arrows-rotate"></i> 전체 DB 기본값 복원
+          </button>
+        </div>
+
+        <!-- Administrative Metric Counters -->
+        <div class="admin-summary-cards">
+          <div class="admin-metric-card">
+            <div class="admin-metric-val" id="admin-count-users">0</div>
+            <div class="admin-metric-lbl">가입 회원</div>
+          </div>
+          <div class="admin-metric-card">
+            <div class="admin-metric-val" id="admin-count-songs">0</div>
+            <div class="admin-metric-lbl">등록 곡 수</div>
+          </div>
+          <div class="admin-metric-card">
+            <div class="admin-metric-val" id="admin-count-comments">0</div>
+            <div class="admin-metric-lbl">누적 댓글 수</div>
+          </div>
+        </div>
+
+        <!-- Admin Table Navigation Tabs -->
+        <div class="admin-tabs">
+          <div class="admin-tab active" id="admin-tab-users" data-tab="users-panel">
+            <i class="fa-solid fa-users"></i> 회원 관리
+          </div>
+          <div class="admin-tab" id="admin-tab-songs" data-tab="songs-panel">
+            <i class="fa-solid fa-music"></i> 곡 정보 관리
+          </div>
+          <div class="admin-tab" id="admin-tab-comments" data-tab="comments-panel">
+            <i class="fa-solid fa-comments"></i> 댓글 관리
+          </div>
+        </div>
+
+        <!-- Admin Dynamic Panels -->
+        <div class="admin-panel-card">
+          <!-- Users Control Table -->
+          <div class="admin-tab-content active" id="admin-panel-users-panel">
+            <h3 style="margin-bottom: 16px;">회원 계정 리스트</h3>
+            <div class="table-wrapper">
+              <table class="admin-table">
+                <thead>
+                  <tr>
+                    <th>아이디</th>
+                    <th>닉네임</th>
+                    <th>권한</th>
+                    <th>관리 액션</th>
+                  </tr>
+                </thead>
+                <tbody id="admin-table-users-body">
+                  <!-- users row -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Songs Control Table -->
+          <div class="admin-tab-content" id="admin-panel-songs-panel">
+            <h3 style="margin-bottom: 16px;">등록된 음악 리스트</h3>
+            <div class="table-wrapper">
+              <table class="admin-table">
+                <thead>
+                  <tr>
+                    <th>곡 ID</th>
+                    <th>커버</th>
+                    <th>제목</th>
+                    <th>가수</th>
+                    <th>등록된 태그</th>
+                    <th>좋아요 수</th>
+                    <th>관리 액션</th>
+                  </tr>
+                </thead>
+                <tbody id="admin-table-songs-body">
+                  <!-- songs row -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Comments Control Table -->
+          <div class="admin-tab-content" id="admin-panel-comments-panel">
+            <h3 style="margin-bottom: 16px;">전체 댓글 통합 내역</h3>
+            <div class="table-wrapper">
+              <table class="admin-table">
+                <thead>
+                  <tr>
+                    <th>댓글 ID</th>
+                    <th>대상 곡</th>
+                    <th>작성자</th>
+                    <th>댓글 내용</th>
+                    <th>작성 시간</th>
+                    <th>관리 액션</th>
+                  </tr>
+                </thead>
+                <tbody id="admin-table-comments-body">
+                  <!-- comments row -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- Global Footer -->
+    <footer>
+      <div class="container">
+        <p>© 2026 🌸 MUSIC VIBE. Made with <i class="fa-solid fa-heart" style="color: var(--accent-pink-deep);"></i> for beautiful melodies.</p>
+        <p style="margin-top: 4px; font-size: 0.75rem; color: var(--text-muted);">* YouTube content displayed is owned by their respective copyright holders.</p>
+      </div>
+    </footer>
+  </div>
+
+  <!-- AUTH MODAL (LOGIN & SIGNUP) -->
+  <div class="modal-overlay" id="auth-modal">
+    <div class="modal-content">
+      <div class="modal-title-bar">
+        <span class="modal-title" id="auth-modal-title">로그인</span>
+        <button class="modal-close" id="auth-modal-close-btn">&times;</button>
+      </div>
+      
+      <!-- Login Section -->
+      <div class="modal-body" id="auth-login-section">
+        <div class="form-group">
+          <label for="login-id">아이디 (ID)</label>
+          <input type="text" id="login-id" placeholder="아이디를 입력하세요 (예: user1, admin)">
+        </div>
+        <div class="form-group">
+          <label for="login-password">비밀번호 (Password)</label>
+          <input type="password" id="login-password" placeholder="비밀번호를 입력하세요 (예: password1, passwordad)">
+        </div>
+        <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 15px;">
+          * 데모 계정 정보:<br>
+          - 일반회원1: <strong>user1 / password1</strong><br>
+          - 일반회원2: <strong>user2 / password2</strong><br>
+          - 최고관리자: <strong>admin / passwordad</strong>
+        </p>
+        <button class="btn btn-primary" id="login-submit-btn" style="width: 100%;">로그인 하기</button>
+        
+        <p style="text-align: center; margin-top: 20px; font-size: 0.85rem; color: var(--text-secondary);">
+          아직 회원이 아니신가요? <span id="switch-to-signup-btn" style="color: var(--accent-pink-deep); font-weight: 600; cursor: pointer; text-decoration: underline;">회원가입 하기</span>
+        </p>
+      </div>
+
+      <!-- Signup Section -->
+      <div class="modal-body" id="auth-signup-section" style="display: none;">
+        <div class="form-group">
+          <label for="signup-id">사용할 아이디 (ID)</label>
+          <input type="text" id="signup-id" placeholder="영문/숫자 아이디 입력">
+        </div>
+        <div class="form-group">
+          <label for="signup-nickname">사용할 닉네임 (Nickname)</label>
+          <input type="text" id="signup-nickname" placeholder="소통 시 표시될 별명 입력">
+        </div>
+        <div class="form-group">
+          <label for="signup-password">비밀번호 (Password)</label>
+          <input type="password" id="signup-password" placeholder="비밀번호를 입력하세요">
+        </div>
+        <div class="form-group">
+          <label for="signup-password-confirm">비밀번호 확인</label>
+          <input type="password" id="signup-password-confirm" placeholder="비밀번호를 다시 한 번 입력하세요">
+        </div>
+        <button class="btn btn-primary" id="signup-submit-btn" style="width: 100%;">회원가입 완료</button>
+        
+        <p style="text-align: center; margin-top: 20px; font-size: 0.85rem; color: var(--text-secondary);">
+          이미 계정이 있으신가요? <span id="switch-to-login-btn" style="color: var(--accent-pink-deep); font-weight: 600; cursor: pointer; text-decoration: underline;">로그인 창으로 이동</span>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- YOUTUBE IMPORT EXTRA DETAILS MODAL -->
+  <div class="modal-overlay" id="import-details-modal">
+    <div class="modal-content">
+      <div class="modal-title-bar">
+        <span class="modal-title">가져올 노래 세부 정보 입력</span>
+        <button class="modal-close" id="import-modal-close-btn">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label>유튜브 비디오 ID</label>
+          <input type="text" id="import-youtube-id" readonly style="background-color: var(--bg-primary); cursor: not-allowed;">
+        </div>
+        <div class="form-group">
+          <label for="import-title">노래 제목 (Title)</label>
+          <input type="text" id="import-title" placeholder="노래 제목을 입력하세요 (예: Dynamite)">
+        </div>
+        <div class="form-group">
+          <label for="import-artist">가수명 (Artist)</label>
+          <input type="text" id="import-artist" placeholder="가수나 제작자 이름을 입력하세요 (예: BTS)">
+        </div>
+        <div class="form-group">
+          <label for="import-description">음악 정보 및 소개 (Description)</label>
+          <textarea id="import-description" style="height: 80px;" placeholder="노래에 대한 간단한 감상평이나 소개 문구를 입력하세요."></textarea>
+        </div>
+        <div class="form-group">
+          <label for="import-tags">초기 해시태그 (쉼표로 구분)</label>
+          <input type="text" id="import-tags" placeholder="예: Kpop, Dance, 2026, 신나는">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-muted" id="import-cancel-btn">취소</button>
+        <button class="btn btn-primary" id="import-confirm-btn">음악 등록하기</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST NOTIFICATION CONTAINER -->
+  <div id="toast-container" style="position: fixed; top: 85px; right: 24px; z-index: 9999; display: flex; flex-direction: column; gap: 10px; pointer-events: none;"></div>
+
+  <!-- Load Data Layer First -->
+  <script src="data.js"></script>
+  <!-- Load Main Application Logic -->
+  <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Board Vibe - 감성을 기록하는 프리미엄 게시판</title>
+    
+    <!-- Google Fonts: Outfit & Plus Jakarta Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Lucide Icons for clean aesthetic -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <!-- Custom Design Stylesheet -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <!-- 은은하게 움직이는 몽환적 배경 오브 -->
+    <div class="ambient-bg">
+        <div class="blob blob-purple"></div>
+        <div class="blob blob-blue"></div>
+        <div class="blob blob-pink"></div>
+    </div>
+
+    <!-- 메인 컨테이너 -->
+    <main class="app-container">
+        
+        <!-- 헤더 영역 -->
+        <header class="app-header">
+            <div class="brand-badge">
+                <span class="pulse-dot"></span>
+                <span>Live Feed</span>
+            </div>
+            <h1 class="brand-title">Board <span class="gradient-text">Vibe</span></h1>
+            <p class="brand-subtitle">당신의 생각과 오늘 하루의 무드를 감각적인 카드에 기록해보세요.</p>
+            
+            <div class="stats-panel">
+                <div class="stat-item">
+                    <span class="stat-icon"><i data-lucide="layers"></i></span>
+                    <span class="stat-label">Total Vibes</span>
+                    <span id="totalCount" class="stat-value">0</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- 글 작성 섹션 (유리창 효과 폼) -->
+        <section class="form-section">
+            <div class="glass-card form-card">
+                <div class="form-header">
+                    <div class="header-icon"><i data-lucide="pen-tool"></i></div>
+                    <div>
+                        <h2>Share Your Vibe</h2>
+                        <p>새로운 영감이나 메세지를 작성해보세요</p>
+                    </div>
+                </div>
+                
+                <form id="vibeForm" autocomplete="off">
+                    <!-- 제목 입력 필드 (플로팅 레이블) -->
+                    <div class="input-group">
+                        <input type="text" id="title" name="title" required placeholder=" " maxlength="50">
+                        <label for="title">제목을 입력하세요 (최대 50자)</label>
+                        <div class="input-indicator">
+                            <span id="titleCounter" class="char-counter">0 / 50</span>
+                        </div>
+                    </div>
+                    
+                    <!-- 본문 입력 필드 (플로팅 레이블) -->
+                    <div class="input-group">
+                        <textarea id="message" name="message" required placeholder=" " maxlength="500" rows="4"></textarea>
+                        <label for="message">당신의 메세지를 남겨주세요... (최대 500자)</label>
+                        <div class="input-indicator">
+                            <span id="messageCounter" class="char-counter">0 / 500</span>
+                        </div>
+                    </div>
+                    
+                    <!-- 제출 버튼 -->
+                    <button type="submit" class="submit-btn">
+                        <span>전송하기</span>
+                        <i data-lucide="send" class="btn-icon"></i>
+                    </button>
+                </form>
+            </div>
+        </section>
+
+        <!-- 카드 뷰 그리드 섹션 -->
+        <section class="grid-section">
+            <div class="section-title-wrapper">
+                <h3 class="section-title"><i data-lucide="layout-grid"></i> 피드 둘러보기</h3>
+                <span class="section-line"></span>
+            </div>
+            
+            <!-- 작성된 글들이 카드 형태로 추가될 그리드 컨테이너 -->
+            <div id="vibeGrid" class="vibe-grid">
+                <!-- 로딩 스켈레톤 또는 빈 상태 메세지가 들어옴 -->
+                <div id="emptyState" class="empty-state">
+                    <div class="empty-icon"><i data-lucide="sparkles"></i></div>
+                    <h4>등록된 카드가 아직 없습니다</h4>
+                    <p>첫 번째 감성 카드의 주인공이 되어보세요!</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 푸터 -->
+        <footer class="app-footer">
+            <p>&copy; 2026 Board Vibe. Crafted with passion & design excellence.</p>
+        </footer>
+    </main>
+
+    <!-- 세련된 알림창이 띄워지는 컨테이너 -->
+    <div id="toastContainer" class="toast-container"></div>
+
+    <!-- Frontend Script -->
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>
