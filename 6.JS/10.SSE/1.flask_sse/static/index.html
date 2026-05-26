@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>SSE 테스트</h1>
+    <input type="text" id="msg" placeholder="메시지 입력">
+    <button id="send">전송</button>
+    <br>
+    <div id="reply"></div>
+    <script>
+        //응답 출력할 곳 가져오기
+        const reply = document.getElementById('reply');
+
+        //메시지 받는 API
+        const source = new EventSource("/stream");
+
+        source.onopen = () => {
+            console.log("서버와 연결됨 - SSE 리슨 시작");
+        }
+
+        source.onmessage = (event) => {
+            console.log("서버 메세지: ", event.data);
+
+            const newReply = document.createElement('div');
+            newReply.textContent = event.data;
+            reply.appendChild(newReply);
+        }
+
+        document.getElementById('send').addEventListener('click', () => {
+            const msg = document.getElementById("msg").value;
+
+            fetch("/send", {
+                method: 'POST',
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded",
+                },
+                body: "msg=" + encodeURIComponent(msg)
+            })
+        })
+    </script>
+</body>
+</html>
