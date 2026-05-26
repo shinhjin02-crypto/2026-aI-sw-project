@@ -6,39 +6,37 @@
     <title>Document</title>
 </head>
 <body>
-    <h1>SSE 테스트</h1>
+    <h1>웹소켓 테스트</h1>
     <input type="text" id="msg" placeholder="메시지 입력">
     <button id="send">전송</button>
-    <br>
+    <hr>
     <div id="reply"></div>
     <script>
-        //응답 출력할 곳 가져오기
+        // 응답 출력할곳 가져오기
         const reply = document.getElementById('reply');
 
-        //메시지 받는 API
-        const source = new EventSource("/stream");
-
+        // 메시지 받는 API
+        const source = new EventSource("/stream"); // SSE 를 듣기 시작함
         source.onopen = () => {
             console.log("서버와 연결됨 - SSE 리슨 시작");
         }
-
         source.onmessage = (event) => {
-            console.log("서버 메세지: ", event.data);
+            console.log("서버 메시지: ", event.data);
 
             const newReply = document.createElement('div');
             newReply.textContent = event.data;
             reply.appendChild(newReply);
         }
 
+        // 메시지 보내는 API
         document.getElementById('send').addEventListener('click', () => {
-            const msg = document.getElementById("msg").value;
-
+            const msg = document.getElementById('msg').value;
             fetch("/send", {
                 method: 'POST',
                 headers: {
                     "Content-Type": "application/x-www-form-urlencoded",
                 },
-                body: "msg=" + encodeURIComponent(msg)
+                body: "msg=" + encodeURIComponent(msg)  // 폼의 기본 key-value 는 key=값 형태로 전달됨.
             })
         })
     </script>
