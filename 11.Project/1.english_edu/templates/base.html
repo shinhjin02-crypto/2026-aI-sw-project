@@ -355,6 +355,31 @@
         border-color: #ab47bc;
         box-shadow: 0 8px 0 #6a1b9a;
     }
+
+    .home-button {
+        position: fixed;
+        top: 18px;
+        right: 20px;
+        background: white;
+        color: #333;
+        text-decoration: none;
+        font-weight: bold;
+        padding: 12px 18px;
+        border-radius: 999px;
+        box-shadow: 0 5px 0 #fbc02d;
+        border: 3px solid #ffd54f;
+        z-index: 999;
+        transition: 0.2s;
+    }
+
+    .home-button:hover {
+        transform: translateY(-3px);
+    }
+
+    .home-button:active {
+        transform: translateY(2px);
+        box-shadow: 0 2px 0 #fbc02d;
+    }
 </style>
 </head>
 <body class="
@@ -367,6 +392,7 @@
     {% else %}home-theme
     {% endif %}
 ">
+<a href="{{ url_for('home') }}" class="home-button">🏠 Home</a>
     <h1>ChatGPT와 함께 배우는 영어 클래스</h1>
     <nav>
         <ul>

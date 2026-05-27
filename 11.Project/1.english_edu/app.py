@@ -18,6 +18,8 @@ client = OpenAI(
 
 app = Flask(__name__)
 
+chat_memory=[]
+
 #각 학년별 커리큘럼 데이터
 curriculums = {
     #key=[value]
@@ -77,11 +79,12 @@ def test_ai():
 @app.route('/chat', methods=['POST'])
 def chat():
 
+    global chat_memory
+
     user_message = request.form.get('message')
     grade = request.form.get('grade')
     curriculum_title = request.form.get('curriculum_title')
 
-    # 문자열 → 숫자 변환
     grade = int(grade)
 
     # 현재 학년 규칙만 가져오기
@@ -90,7 +93,7 @@ def chat():
         "학생 수준에 맞게 쉽게 설명해."
     )
 
-    prompt = f"""
+    system_prompt = f"""
         너는 초등학교 {grade}학년 학생을 가르치는 친절한 영어 선생님이야.
 
         현재 수업 주제는 "{curriculum_title}" 이야.
@@ -111,17 +114,39 @@ def chat():
         3. "{curriculum_title}"와 관련된 쉬운 영어 예문을 1개 이상 말해줘.
         4. 학생이 대답할 수 있는 짧은 영어 질문을 마지막에 1개 해줘.
         5. 완전히 관련 없는 질문이면 짧게 답한 뒤 다시 "{curriculum_title}" 수업으로 돌아와.
+        6. 실제 영어 선생님처럼 자연스럽게 대화해.
+        7. 매번 같은 형식으로 답하지 마.
+        8. 꼭 단어/예문/질문을 모두 넣지 않아도 돼.
+        9. 친구처럼 부드럽게 이어서 대화해.
+        10. 초등학생과 대화하듯 밝고 따뜻하게 말해.
 
         학생의 말:
         {user_message}
     """
 
-    response = client.responses.create(
+    chat_memory.append({
+        "role": "user",
+        "content": user_message
+    })
+
+    messages = [
+        {
+            "role": "system",
+            "content": system_prompt
+        }
+    ] + chat_memory
+
+    response = client.chat.completions.create(
         model="gpt-4o-mini",
-        input=prompt
+        messages=messages
     )
 
-    ai_answer = response.output_text
+    ai_answer = response.choices[0].message.content
+
+    chat_memory.append({
+        "role": "assistant",
+        "content": ai_answer
+    })
 
     return ai_answer
 
