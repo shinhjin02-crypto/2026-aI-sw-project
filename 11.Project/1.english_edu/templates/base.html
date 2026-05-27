@@ -4,9 +4,370 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>영어 교육 사이트</title>
+    <style>
+    body {
+        font-family: 'Comic Sans MS', 'Arial', sans-serif;
+        margin: 0;
+        padding: 0;
+        background: #fff8dc;
+        color: #333;
+    }
+
+    body.home-theme {
+        background: linear-gradient(135deg, #e3f2fd, #fffde7);
+    }
+
+    h1 {
+        text-align: center;
+        background-color: white;
+        padding: 20px;
+        margin: 0;
+        color: #ff9800;
+        border-bottom: 5px dotted #ffd54f;
+    }
+
+    h2 {
+        text-align: center;
+        font-size: 28px;
+        margin-top: 30px;
+    }
+
+    p {
+        text-align: center;
+        font-size: 18px;
+    }
+
+    nav ul {
+        display: flex;
+        justify-content: center;
+        gap: 12px;
+        list-style: none;
+        padding: 20px;
+        margin: 0;
+    }
+
+    nav a {
+        display: inline-block;
+        background-color: white;
+        padding: 12px 18px;
+        border-radius: 25px;
+        text-decoration: none;
+        color: #333;
+        font-weight: bold;
+        box-shadow: 0 4px 0 #fbc02d;
+    }
+
+    nav a:hover {
+        transform: translateY(-3px);
+    }
+
+    .chat-box {
+        width: 90%;
+        max-width: 650px;
+        margin: 30px auto;
+        background-color: white;
+        border-radius: 30px;
+        padding: 25px;
+        box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+        border: 5px solid #fff;
+    }
+
+    .chat-box::before {
+        content: "🐣 AI English Class";
+        display: block;
+        text-align: center;
+        font-size: 22px;
+        font-weight: bold;
+        margin-bottom: 15px;
+        color: #ff9800;
+    }
+
+    .chat-messages {
+        height: 350px;
+        overflow-y: auto;
+        background-color: #fffdf2;
+        border-radius: 25px;
+        padding: 20px;
+        border: 3px dashed #ffd54f;
+        margin-bottom: 15px;
+    }
+
+    .ai-message,
+    .user-message {
+        max-width: 75%;
+        padding: 12px 16px;
+        border-radius: 20px;
+        margin-bottom: 12px;
+        line-height: 1.5;
+        font-size: 16px;
+        word-break: break-word;
+    }
+
+    .ai-message {
+        background-color: #e3f2fd;
+        border-bottom-left-radius: 5px;
+        margin-right: auto;
+    }
+
+    .ai-message::before {
+        content: "🤖 선생님 ";
+        font-weight: bold;
+    }
+
+    .user-message {
+        background-color: #fff59d;
+        border-bottom-right-radius: 5px;
+        margin-left: auto;
+        text-align: right;
+    }
+
+    .user-message::before {
+        content: "🧒 나 ";
+        font-weight: bold;
+    }
+
+    form {
+        display: flex;
+        gap: 10px;
+    }
+
+    input[type="text"] {
+        flex: 1;
+        padding: 15px;
+        border: 3px solid #ffd54f;
+        border-radius: 20px;
+        font-size: 16px;
+        outline: none;
+    }
+
+    input[type="text"]:focus {
+        border-color: #ff9800;
+    }
+
+    footer {
+        text-align: center;
+        padding: 20px;
+        margin-top: 40px;
+        font-size: 14px;
+        color: #777;
+    }
+
+    body.yellow-theme .chat-box {
+        border-color: #fff176;
+    }
+
+    body.orange-theme .chat-box {
+        border-color: #ffb74d;
+    }
+
+    button {
+        padding: 15px 24px;
+        border: none;
+        border-radius: 999px;
+        background: linear-gradient(135deg, #ffb74d, #ff9800);
+        color: white;
+        font-weight: bold;
+        cursor: pointer;
+        font-size: 16px;
+        box-shadow: 0 5px 0 #e65100;
+        transition: 0.2s;
+    }
+
+    button::before {
+        content: "💌 ";
+    }
+
+    button:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 0 #e65100;
+    }
+
+    button:active {
+        transform: translateY(2px);
+        box-shadow: 0 2px 0 #e65100;
+    }
+
+    body.grade-1 button {
+        background: linear-gradient(135deg, #ff8a80, #ef5350);
+        box-shadow: 0 5px 0 #c62828;
+    }
+
+    body.grade-2 button {
+        background: linear-gradient(135deg, #ffcc80, #fb8c00);
+        box-shadow: 0 5px 0 #e65100;
+    }
+
+    body.grade-3 button {
+        background: linear-gradient(135deg, #fff176, #fbc02d);
+        box-shadow: 0 5px 0 #f57f17;
+        color: #5d4037;
+    }
+
+    body.grade-4 button {
+        background: linear-gradient(135deg, #a5d6a7, #43a047);
+        box-shadow: 0 5px 0 #2e7d32;
+    }
+
+    body.grade-5 button {
+        background: linear-gradient(135deg, #90caf9, #1e88e5);
+        box-shadow: 0 5px 0 #1565c0;
+    }
+
+    body.grade-6 button {
+        background: linear-gradient(135deg, #ce93d8, #8e24aa);
+        box-shadow: 0 5px 0 #6a1b9a;
+    }
+
+    .select-page {
+    min-height: 60vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    text-align: center;
+    padding: 40px 20px;
+    }
+
+    .cute-icon {
+        font-size: 52px;
+        margin-bottom: 10px;
+    }
+
+    .select-page h2 {
+        font-size: 32px;
+        margin: 10px 0;
+    }
+
+    .select-page p {
+        font-size: 18px;
+        margin-bottom: 30px;
+    }
+
+    .card-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 190px);
+        gap: 32px;
+        justify-content: center;
+    }
+
+    .select-card {
+        height: 150px;
+        background-color: white;
+        border-radius: 30px;
+        text-decoration: none;
+        color: #333;
+
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+
+        font-size: 22px;
+        font-weight: bold;
+        box-shadow: 0 8px 0 #fbc02d;
+        border: 4px solid #fff176;
+
+        transition: 0.2s;
+    }
+
+    .select-card:hover {
+        transform: translateY(-6px);
+    }
+
+    .card-emoji {
+        font-size: 40px;
+        margin-bottom: 12px;
+    }
+
+    .curriculum-card {
+        width: 190px;
+        min-height: 150px;
+    }
+
+    @media (max-width: 700px) {
+        .card-grid {
+            grid-template-columns: repeat(2, 150px);
+        }
+
+        .select-card {
+            height: 140px;
+            font-size: 20px;
+        }
+    }
+
+    body.grade-1 {
+        background: linear-gradient(135deg, #ffb3b3, #ffe5e5);
+    }
+
+    body.grade-2 {
+        background: linear-gradient(135deg, #ffd59e, #fff0db);
+    }
+
+    body.grade-3 {
+        background: linear-gradient(135deg, #fff7a8, #fffde7);
+    }
+
+    body.grade-4 {
+        background: linear-gradient(135deg, #b8f5c5, #effff2);
+    }
+
+    body.grade-5 {
+        background: linear-gradient(135deg, #b7dcff, #eef7ff);
+    }
+
+    body.grade-6 {
+        background: linear-gradient(135deg, #d9c2ff, #f5efff);
+    }
+
+    body.grade-1 .select-card,
+    body.grade-1 .chat-box {
+        border-color: #ef5350;
+        box-shadow: 0 8px 0 #d32f2f;
+    }
+
+    body.grade-2 .select-card,
+    body.grade-2 .chat-box {
+        border-color: #ff9800;
+        box-shadow: 0 8px 0 #ef6c00;
+    }
+
+    body.grade-3 .select-card,
+    body.grade-3 .chat-box {
+        border-color: #fdd835;
+        box-shadow: 0 8px 0 #f9a825;
+    }
+
+    body.grade-4 .select-card,
+    body.grade-4 .chat-box {
+        border-color: #66bb6a;
+        box-shadow: 0 8px 0 #2e7d32;
+    }
+
+    body.grade-5 .select-card,
+    body.grade-5 .chat-box {
+        border-color: #42a5f5;
+        box-shadow: 0 8px 0 #1565c0;
+    }
+
+    body.grade-6 .select-card,
+    body.grade-6 .chat-box {
+        border-color: #ab47bc;
+        box-shadow: 0 8px 0 #6a1b9a;
+    }
+</style>
 </head>
-<body>
-    <h1>ChatGPT와 함꼐 배우는 영어 클래스</h1>
+<body class="
+    {% if grade == 1 %}grade-1
+    {% elif grade == 2 %}grade-2
+    {% elif grade == 3 %}grade-3
+    {% elif grade == 4 %}grade-4
+    {% elif grade == 5 %}grade-5
+    {% elif grade == 6 %}grade-6
+    {% else %}home-theme
+    {% endif %}
+">
+    <h1>ChatGPT와 함께 배우는 영어 클래스</h1>
     <nav>
         <ul>
             {% for grade in grades %}

@@ -5,7 +5,16 @@
 # 4. 그럼 이제, 진짜 우리의 이 상황 (학년, 커리큐럼) 에 대해서 영어로 대화를 하도록 만든다.
 # 5. [추가] 메모리를 통해서 대화 내용 컨텍스트를 기억하게 한다."					 
 
-from flask import Flask, render_template
+from flask import Flask, render_template, request
+from dotenv import load_dotenv
+from openai import OpenAI
+import os
+
+load_dotenv()
+
+client = OpenAI(
+    api_key=os.getenv("OPENAI_API_KEY")
+)
 
 app = Flask(__name__)
 
@@ -19,6 +28,102 @@ curriculums = {
     5: ['역사와 문화', '과학과 자연', '사회 이슈'],
     6: ['미래 계획', '진로 탐색', '세계 여행'],
 }
+
+grade_rules = {
+        1: """
+    - 아주 짧은 영어 문장으로 말해.
+    - 한글 설명을 많이 섞어줘.
+    - 단어 위주로 알려줘.
+    - 예문은 1개만 줘.
+    """,
+        2: """
+    - 짧은 영어 문장으로 말해.
+    - 쉬운 단어를 사용해.
+    - 한글 설명을 함께 해줘.
+    - 예문은 1~2개 줘.
+    """,
+        3: """
+    - 쉬운 영어 문장으로 대화해.
+    - 간단한 질문도 같이 해줘.
+    - 어려운 표현은 한국어로 설명해.
+    """,
+        4: """
+    - 영어 비율을 조금 더 높여줘.
+    - 문장 패턴을 알려줘.
+    - 학생이 따라 말할 수 있는 예문을 줘.
+    """,
+        5: """
+    - 영어로 먼저 설명하고, 필요한 부분만 한국어로 설명해.
+    - 문법 포인트를 1개 포함해.
+    - 예문과 짧은 연습문제를 줘.
+    """,
+        6: """
+    - 최대한 영어로 대화해.
+    - 중학교 준비 수준의 표현도 조금 포함해.
+    - 문법 설명과 응용 예문을 포함해.
+    """
+}
+
+@app.route('/test-ai')
+def test_ai():
+    response = client.responses.create(
+        model = "gpt-4o-mini",
+        input = "안녕? 너는 10년차 영어 강사야."
+    )
+    answer = response.output_text
+
+    return answer
+
+@app.route('/chat', methods=['POST'])
+def chat():
+
+    user_message = request.form.get('message')
+    grade = request.form.get('grade')
+    curriculum_title = request.form.get('curriculum_title')
+
+    # 문자열 → 숫자 변환
+    grade = int(grade)
+
+    # 현재 학년 규칙만 가져오기
+    rule = grade_rules.get(
+        grade,
+        "학생 수준에 맞게 쉽게 설명해."
+    )
+
+    prompt = f"""
+        너는 초등학교 {grade}학년 학생을 가르치는 친절한 영어 선생님이야.
+
+        현재 수업 주제는 "{curriculum_title}" 이야.
+        반드시 이 주제와 관련된 영어 대화를 해야 해.
+
+        출력 형식 규칙:
+        1. Markdown 문법을 절대 사용하지 마.
+        2. **굵게**, ##제목, - 목록, ```코드블록을 쓰지 마.
+        3. 일반 문장으로만 답해.
+        4. 줄바꿈은 짧게만 사용해.
+
+        학년별 규칙:
+        {rule}
+
+        주제별 대화 규칙:
+        1. 학생의 질문이 다른 내용이어도 "{curriculum_title}" 주제로 자연스럽게 연결해.
+        2. "{curriculum_title}"와 관련된 단어를 2개 이상 알려줘.
+        3. "{curriculum_title}"와 관련된 쉬운 영어 예문을 1개 이상 말해줘.
+        4. 학생이 대답할 수 있는 짧은 영어 질문을 마지막에 1개 해줘.
+        5. 완전히 관련 없는 질문이면 짧게 답한 뒤 다시 "{curriculum_title}" 수업으로 돌아와.
+
+        학생의 말:
+        {user_message}
+    """
+
+    response = client.responses.create(
+        model="gpt-4o-mini",
+        input=prompt
+    )
+
+    ai_answer = response.output_text
+
+    return ai_answer
 
 @app.route('/')
 def home():
