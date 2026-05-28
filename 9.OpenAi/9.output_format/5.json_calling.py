@@ -9,6 +9,7 @@ client = OpenAI(api_key=os.getenv('OPENAI_API_KEY'))
 
 def get_weather(city):
     weather = {'서울': '맑음, 22도', '부산': '흐림, 25도', 'LA': '맑음, 27도'}
+    # 외부 날씨 API를 연동해서 실제 정보를 가져올수도 있다.
     return weather.get(city, '해당 도시의 정보는 없습니다.')
 
 tools = [
@@ -28,24 +29,20 @@ tools = [
     }
 ]
 
-prompt = '서울의 날씨를 알려주시오.'
-
 response = client.chat.completions.create(
-    model = 'gpt-4o-mini',
+    model='gpt-4o-mini',
     messages=[
-        {'role': 'system', 'content': '질문에 대해 JSON으로만 답변하시오.'},
-        {'role': 'user', 'content': '서울의 날씨를 알려주시오.'},
+        {'role':'system', 'content':'질문에 대해 JSON으로만 답변하시오.'},
+        {'role':'user', 'content':'서울의 날씨를 알려주시오.'},
     ],
     tools=tools,
 )
 
-message=response[0].choices[0].message
-
+message = response.choices[0].message
+# print(message)
 if message.tool_calls:
     call = message.tool_calls[0]
     print('모델이 호출하려는 함수는: ', call.function.name)
     print('모델이 추가하려는 인자는: ', json.loads(call.function.arguments))
-
-prompt += '\n\n참고자료: {}'
-
-#TODO
+else:
+    print('함수 없이 그냥 답변중: ', message.content)

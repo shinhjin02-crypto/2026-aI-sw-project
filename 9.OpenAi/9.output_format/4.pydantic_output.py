@@ -14,26 +14,18 @@ class CityInfo(BaseModel):
     population: int
     area_km2: float
 
-city_schema = {
-    'type': 'object',
-    'properties': {
-        'name': {'type': 'string'},
-        'population': {'type': 'integer'},
-        'area_km2': {'type': 'number'},
-    },
-    'required': ['name', 'population', 'area_km2'],
-    'additionalProperties': False,
-}
-
-response = client.chat.completions.parse(
+# response = client.chat.completions.create(  
+response = client.chat.completions.parse( # 파이썬 객체 형태는 parse로 받아야함.
     model='gpt-4o-mini',
     messages=[
-        {'role': 'system', 'content': '질문에 대해 JSON으로만 답변하시오.'},
-        {'role': 'user', 'content': '서울의 인구와 면적을 알려주시오.'},
+        {'role':'system', 'content':'질문에 대해 JSON으로만 답변하시오.'},
+        {'role':'user', 'content':'서울의 인구와 면적을 알려주시오.'},
     ],
-    response_format=CityInfo
+    response_format=CityInfo   # 파이썬 객체(클래스) 형태로 받을수 있음
 )
 
-answer = response.choices[0].message.parsed
+# answer = response.choices[0].message.content   # create로 물어본건 content 에 담기고
+answer = response.choices[0].message.parsed      # parse 로 물어본건 parsed  에 담긴다.
+# print(answer)
 data = answer
-#print(answer)
+print(f"도시의 이름: {data.name} - 인구: {data.population:,}명, 면적 {data.area_km2}km2")

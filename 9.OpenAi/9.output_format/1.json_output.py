@@ -8,12 +8,11 @@ load_dotenv()
 client = OpenAI(api_key=os.getenv('OPENAI_API_KEY'))
 
 response = client.chat.completions.create(
-    model = 'gpt-4o-mini',
+    model='gpt-4o-mini',
     messages=[
-        {'role': 'system', 'content': '질문에 대해 JSON으로만 답변하시오.'},
-        {'role': 'user', 'content': '서울의 인구와 면적을 알려주시오.'},
-    ],
-    response_format={'type': 'json_object'} #출력 결과가 ooo타입이 되도록 API 단계에서 보장한다.
+        {'role':'system', 'content':'질문에 대해 JSON으로만 답변하시오.'},
+        {'role':'user', 'content':'서울의 인구와 면적을 알려주시오.'},
+    ]
 )
 
 answer = response.choices[0].message.content
