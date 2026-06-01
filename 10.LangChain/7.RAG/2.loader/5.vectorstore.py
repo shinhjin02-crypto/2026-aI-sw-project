@@ -12,13 +12,13 @@ from langchain_chroma import Chroma
 
 load_dotenv()
 
-DB_DIR = "./chroma_db"
+DB_DIR = "./10.LangChain/7.RAG/2.loader/chroma_db"
 COLLECTION_NAME = "memory"
 
 embeddings = OpenAIEmbeddings(model="text-embedding-3-small")
 
 def build_store():
-    docs = TextLoader("./hbm.txt", encoding="utf-8").load()
+    docs = TextLoader("./10.LangChain/7.RAG/2.loader/hbm.txt", encoding="utf-8").load()
     chunks = RecursiveCharacterTextSplitter(chunk_size=500, chunk_overlap=100).split_documents(docs)
     store = Chroma.from_documents(
         chunks, embeddings,

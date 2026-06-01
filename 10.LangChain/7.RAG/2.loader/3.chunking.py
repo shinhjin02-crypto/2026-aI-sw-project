@@ -1,7 +1,7 @@
 from langchain_community.document_loaders import TextLoader
 from langchain_text_splitters import CharacterTextSplitter, RecursiveCharacterTextSplitter
 
-loader = TextLoader("./hbm.txt", encoding="utf-8")
+loader = TextLoader("./10.LangChain/7.RAG/2.loader/hbm.txt", encoding="utf-8")
 documents = loader.load()
 
 contents = documents[0].page_content
