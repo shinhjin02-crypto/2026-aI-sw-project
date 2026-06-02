@@ -46,5 +46,10 @@ agent.update_state(config, {"messages": [fixed]})
 print(f"사람이 수정했음 10000 -> 5000")
 
 # 3. 다시 이어서 실행한다.
-result = agent.invoke(None, config=config)
-print(f"[최종] {result['messages'][-1].content}")
+#result = agent.invoke(None, config=config)
+#print(f"[최종] {result['messages'][-1].content}")
+
+final = result["messages"][-1].content
+if not final:
+    final = result["messages"][-2].content
+    print(f"[최종] {final}")
