@@ -1,3 +1,5 @@
+# pip install ollama
+
 import ollama
 
 ollama.pull("mistral")
